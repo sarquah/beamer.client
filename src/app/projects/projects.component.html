@@ -1,7 +1,7 @@
 <h2>Projects</h2>
-<div *ngFor="let project of projects">
+<div *ngFor="let project of projects; index as id">
   <h3>
-    <a [title]="project.name + ' details'" href="#">
+    <a [title]="project.name + ' details'" [routerLink]="['/projects', id]">
       {{ project.name }}
     </a>
   </h3>
