@@ -13,7 +13,7 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot([
-      { path: '', component: ProjectsComponent },
+      { path: 'projects', component: ProjectsComponent },
       { path: 'projects/:id', component: ProjectDetailsComponent }
     ])
   ],

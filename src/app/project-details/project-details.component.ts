@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { projects } from './../projects';
+import { IProject } from './../IProject';
 
 @Component({
   selector: 'app-project-details',
@@ -8,12 +9,14 @@ import { projects } from './../projects';
   styleUrls: ['./project-details.component.scss']
 })
 export class ProjectDetailsComponent implements OnInit {
-  project;
+  project: IProject;
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      this.project = projects[+params.get('id')];
+      this.project = projects.find((project: IProject) => {
+        return project.id === parseInt(params.get('id'), 10);
+      });
     });
   }
 }
