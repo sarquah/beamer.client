@@ -1,0 +1,10 @@
+<h2>Projects</h2>
+<div *ngFor="let project of projects">
+  <h3>
+    <a [title]="project.name + ' details'" href="#">
+      {{ project.name }}
+    </a>
+  </h3>
+  <p>Owner: {{ project.owner }}</p>
+  <p *ngIf="project.description">{{ project.description }}</p>
+</div>
