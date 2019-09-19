@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { RouterModule } from '@angular/router';
@@ -11,6 +12,7 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
   declarations: [AppComponent, ProjectsComponent, ProjectDetailsComponent],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot([
       { path: 'projects', component: ProjectsComponent },

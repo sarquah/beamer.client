@@ -1,6 +1,6 @@
 <div class="root">
   <h2>Projects</h2>
-  <div *ngFor="let project of projects" class="project">
+  <div *ngFor="let project of projects | async" class="project">
     <h3>
       <a
         [title]="project.name + ' details'"
@@ -9,7 +9,7 @@
         {{ project.name }}
       </a>
     </h3>
-    <p>Owner: {{ project.owner }}</p>
+    <p>Owner: {{ project.ownerName }}</p>
     <p *ngIf="project.description">{{ project.description }}</p>
     <button (click)="addProject(project)">Create duplicate of project</button>
   </div>

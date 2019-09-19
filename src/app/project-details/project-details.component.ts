@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { projects } from './../projects';
-import { IProject } from './../IProject';
+import { ProjectService } from './../project.service';
+import { IProject } from '../iproject';
 
 @Component({
   selector: 'app-project-details',
@@ -10,12 +10,22 @@ import { IProject } from './../IProject';
 })
 export class ProjectDetailsComponent implements OnInit {
   project: IProject;
-  constructor(private route: ActivatedRoute) {}
+
+  constructor(
+    private route: ActivatedRoute,
+    private projectService: ProjectService
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      this.project = projects.find((project: IProject) => {
-        return project.id === parseInt(params.get('id'), 10);
+      const id = parseInt(params.get('id'), 10);
+      this.projectService.getProject(id).subscribe((data: any) => {
+        this.project = {
+          id: data.id,
+          name: data.name,
+          owner: data.ownerName,
+          description: data.description
+        };
       });
     });
   }
