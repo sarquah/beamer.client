@@ -1,26 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { IProject } from './iproject';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
-  projects = [];
   baseUrl = 'http://localhost:65100/api/v1/project';
+  httpOptions;
 
-  constructor(private httpClient: HttpClient) {}
-
-  addProject(project: IProject) {
-    this.projects.push(project);
+  constructor(private httpClient: HttpClient) {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
   }
 
   getProjects() {
-    return this.httpClient.get(`${this.baseUrl}/projects`);
+    const url = `${this.baseUrl}/projects`;
+    return this.httpClient.get(url);
   }
 
   getProject(id: number) {
-    return this.httpClient.get(`${this.baseUrl}/${id}`);
+    const url = `${this.baseUrl}/${id}`;
+    return this.httpClient.get(url);
   }
-  // Todo: Add methods for updating and deleting projects
+
+  updateProject(id: number, project: any) {
+    const url = `${this.baseUrl}/${id}`;
+    return this.httpClient.put(url, project, this.httpOptions);
+  }
+  // Todo: Add methods for deleting projects
 }
