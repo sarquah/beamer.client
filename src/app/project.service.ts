@@ -30,5 +30,9 @@ export class ProjectService {
     const url = `${this.baseUrl}/${id}`;
     return this.httpClient.put(url, project, this.httpOptions);
   }
-  // Todo: Add methods for deleting projects
+
+  deleteProject(id: number) {
+    const url = `${this.baseUrl}/${id}`;
+    return this.httpClient.delete(url, this.httpOptions);
+  }
 }

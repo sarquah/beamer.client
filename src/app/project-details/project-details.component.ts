@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from './../project.service';
 import { IProject } from '../iproject';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -18,6 +18,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private projectService: ProjectService,
     private formBuilder: FormBuilder
   ) {
@@ -38,6 +39,15 @@ export class ProjectDetailsComponent implements OnInit {
     );
     updatedProjectObservable.subscribe(data => {
       this.project = project;
+    });
+  }
+
+  deleteProject(id: number) {
+    const deletedProjectObservable = this.projectService.deleteProject(id);
+    deletedProjectObservable.subscribe(data => {
+      this.project = null;
+      this.projectObservable = null;
+      this.router.navigate(['./projects']);
     });
   }
 

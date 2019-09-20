@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from './../project.service';
-import { IProject } from '../iproject';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -12,10 +10,7 @@ import { Observable } from 'rxjs';
 export class ProjectsComponent implements OnInit {
   projects: Observable<any>;
 
-  constructor(
-    private route: ActivatedRoute,
-    private projectService: ProjectService
-  ) {}
+  constructor(private projectService: ProjectService) {}
   ngOnInit() {
     this.projects = this.projectService.getProjects();
   }
