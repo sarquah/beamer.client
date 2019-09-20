@@ -4,7 +4,8 @@
     <h3>{{ project.name }}</h3>
     <p>Owner: {{ project.owner }}</p>
     <p>{{ project.description }}</p>
-    <button (click)="switchEditMode()">Edit project</button>
+    <button (click)="switchEditMode()" class="leftButton">Edit project</button>
+    <button (click)="deleteProject(project.id)">Delete project</button>
   </div>
   <ng-template #editForm>
     <div class="root">
