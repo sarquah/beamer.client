@@ -1,5 +1,49 @@
-<div *ngIf="project" class="root">
-  <h3>{{ project.name }}</h3>
-  <p>Owner: {{ project.owner }}</p>
-  <p>{{ project.description }}</p>
-</div>
+<div *ngIf="projectObservable | async; then show; else loading"></div>
+<ng-template #show>
+  <div class="root" *ngIf="!editMode; else editForm">
+    <h3>{{ project.name }}</h3>
+    <p>Owner: {{ project.owner }}</p>
+    <p>{{ project.description }}</p>
+    <button (click)="switchEditMode()">Edit project</button>
+  </div>
+  <ng-template #editForm>
+    <div class="root">
+      <form
+        [formGroup]="updateForm"
+        (ngSubmit)="updateProject(project.id, updateForm.value)"
+      >
+        <div>
+          <label for="name">
+            Name
+          </label>
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            value="{{ project.name }}"
+          />
+        </div>
+        <div>
+          <label for="description">
+            Description
+          </label>
+          <input
+            id="description"
+            type="text"
+            formControlName="description"
+            value="{{ project.description }}"
+          />
+        </div>
+        <div>
+          <button class="leftButton" type="submit">
+            Update project
+          </button>
+          <button (click)="switchEditMode()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ng-template>
+<ng-template #loading>
+  <h3>Loading...</h3>
+</ng-template>
