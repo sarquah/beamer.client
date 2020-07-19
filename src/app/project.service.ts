@@ -35,4 +35,6 @@ export class ProjectService {
     const url = `${this.baseUrl}/${id}`;
     return this.httpClient.delete(url, this.httpOptions);
   }
+
+  // TODO add functionality to create project
 }
