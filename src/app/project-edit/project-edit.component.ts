@@ -1,73 +1,72 @@
 import { Component, OnInit } from '@angular/core';
-import { IProject } from '../iproject';
-import { Observable } from 'rxjs';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../project.service';
+import { OnDestroy } from '@angular/core';
+import { IProject } from './../models/interfaces/IProject';
 
+type ProjectFormControls = { [field in keyof IProject]?: FormControl };
 @Component({
   selector: 'app-project-edit',
   templateUrl: './project-edit.component.html',
-  styleUrls: ['./project-edit.component.scss']
+  styleUrls: ['./project-edit.component.scss'],
 })
-export class ProjectEditComponent implements OnInit {
-
-  project: IProject;
-  projectObservable: Observable<any>;
-  updateForm: FormGroup;
-  editMode: boolean;
+export class ProjectEditComponent implements OnInit, OnDestroy {
+  public form: FormGroup;
+  public project$: Observable<IProject>;
+  private id: number;
+  private subscriptions: Subscription[];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
     private formBuilder: FormBuilder
-  ) {
-    this.updateForm = this.formBuilder.group({
-      name: '',
-      description: '',
-      owner: ''
+  ) {}
+
+  public ngOnDestroy() {
+    this.subscriptions.map((x) => {
+      if (x) {
+        x.unsubscribe();
+      }
     });
-    this.editMode = false;
   }
 
   public ngOnInit() {
-    // this.route.paramMap.subscribe(params => {
-    //   const id = parseInt(params.get('id'), 10);
-    //   this.projectObservable = this.projectService.getProject(id);
-    //   this.projectObservable.subscribe((data: any) => {
-    //     this.project = {
-    //       id: data.id,
-    //       name: data.name,
-    //       owner: data.ownerName,
-    //       description: data.description
-    //     };
-    //   });
-    // });
-  }
-
-  public updateProject(id: number, project: any) {
-    this.switchEditMode();
-    project.id = id;
-    const updatedProjectObservable = this.projectService.updateProject(
-      id,
-      project
+    this.form = this.createForm();
+    this.subscriptions = [];
+    this.subscriptions.push(
+      this.route.paramMap.subscribe((params) => {
+        this.id = parseInt(params.get('id'), 10);
+        this.project$ = this.projectService.getProject(this.id);
+        this.subscriptions.push(
+          this.project$.subscribe((x) => this.form.patchValue(x))
+        );
+      })
     );
-    updatedProjectObservable.subscribe(data => {
-      this.project = project;
-    });
   }
 
-  public deleteProject(id: number) {
-    const deletedProjectObservable = this.projectService.deleteProject(id);
-    deletedProjectObservable.subscribe(data => {
-      this.project = null;
-      this.projectObservable = null;
-      this.router.navigate(['./projects']);
-    });
+  public updateProject() {
+    const project: IProject = this.form.value;
+    project.id = this.id;
+    this.subscriptions.push(
+      this.projectService
+        .updateProject(this.id, project)
+        .subscribe((x) => this.router.navigate(['./projects']))
+    );
   }
 
-  public switchEditMode() {
-    this.editMode = !this.editMode;
+  private createForm(): FormGroup {
+    const formControls: ProjectFormControls = {
+      id: new FormControl(null),
+      name: new FormControl(null),
+      description: new FormControl(null),
+      ownerName: new FormControl(null),
+      startDate: new FormControl(null),
+      endDate: new FormControl(null),
+      status: new FormControl(null)
+    };
+    return this.formBuilder.group(formControls);
   }
 }

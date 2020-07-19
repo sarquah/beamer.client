@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from './../project.service';
-import { IProject } from '../iproject';
+import { IProject } from '../models/interfaces/IProject';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
+import { EStatus } from '../models/enums/EStatus';
 
 @Component({
   selector: 'app-project-details',
@@ -12,19 +13,17 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class ProjectDetailsComponent implements OnInit, OnDestroy {
   public project$: Observable<IProject>;
-  public form: FormGroup;
+  public EStatus = EStatus;
   private subscriptions: Subscription[];
   private id: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private projectService: ProjectService,
-    private formBuilder: FormBuilder
+    private projectService: ProjectService
   ) {}
 
   public ngOnInit() {
-    this.form = this.createForm();
     this.subscriptions = [];
     this.subscriptions.push(
       this.route.paramMap.subscribe((params) => {
@@ -43,15 +42,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   public deleteProject() {
-    this.project$ = this.projectService.deleteProject(this.id);
-    this.router.navigate(['./projects']);
-  }
-
-  private createForm(): FormGroup {
-    return this.formBuilder.group({
-      name: '',
-      description: '',
-      owner: '',
-    });
+    this.subscriptions.push(
+      this.projectService
+        .deleteProject(this.id)
+        .subscribe((x) => this.router.navigate(['./projects']))
+    );
   }
 }

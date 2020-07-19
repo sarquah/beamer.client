@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from './../project.service';
 import { Observable } from 'rxjs';
-import { IProject } from './../IProject';
+import { IProject } from '../models/interfaces/IProject';
 
 @Component({
   selector: 'app-projects',
