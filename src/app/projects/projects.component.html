@@ -1,11 +1,8 @@
 <div class="root">
   <h2>Projects</h2>
-  <div *ngFor="let project of projects | async" class="project">
+  <div *ngFor="let project of projects$ | async" class="project">
     <h3>
-      <a
-        [title]="project.name + ' details'"
-        [routerLink]="['/projects', project.id]"
-      >
+      <a [title]="project.name + ' details'" [routerLink]="['/projects', project.id]">
         {{ project.name }}
       </a>
     </h3>

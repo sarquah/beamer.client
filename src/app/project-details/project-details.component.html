@@ -1,49 +1,15 @@
-<div *ngIf="projectObservable | async; then show; else loading"></div>
+<div *ngIf="project$ | async; then show; else loading"></div>
 <ng-template #show>
-  <div class="root" *ngIf="!editMode; else editForm">
-    <h3>{{ project.name }}</h3>
-    <p>Owner: {{ project.owner }}</p>
-    <p>{{ project.description }}</p>
-    <button (click)="switchEditMode()" class="leftButton">Edit project</button>
-    <button (click)="deleteProject(project.id)">Delete project</button>
+  <div class="root">
+    <h3>{{ (project$ | async)?.name}}</h3>
+    <p>Owner: {{ (project$ | async)?.ownerName }}</p>
+    <p>{{ (project$ | async)?.description }}</p>
+    <p>Start date: {{ (project$ | async)?.startDate | date }}</p>
+    <p>End date: {{ (project$ | async)?.endDate | date}}</p>
+    <p>Status: {{ EStatus[(project$ | async)?.status] }}</p>
+    <button [routerLink]="['edit']" class="leftButton">Edit project</button>
+    <button (click)="deleteProject()">Delete project</button>
   </div>
-  <ng-template #editForm>
-    <div class="root">
-      <form
-        [formGroup]="updateForm"
-        (ngSubmit)="updateProject(project.id, updateForm.value)"
-      >
-        <div>
-          <label for="name">
-            Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            formControlName="name"
-            value="{{ project.name }}"
-          />
-        </div>
-        <div>
-          <label for="description">
-            Description
-          </label>
-          <input
-            id="description"
-            type="text"
-            formControlName="description"
-            value="{{ project.description }}"
-          />
-        </div>
-        <div>
-          <button class="leftButton" type="submit">
-            Update project
-          </button>
-          <button (click)="switchEditMode()">Cancel</button>
-        </div>
-      </form>
-    </div>
-  </ng-template>
 </ng-template>
 <ng-template #loading>
   <h3>Loading...</h3>

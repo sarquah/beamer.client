@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { IProject } from './models/interfaces/IProject';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
-  baseUrl = 'http://localhost:65100/api/v1/project';
-  httpOptions;
+  private hostName = 'http://localhost:65100';
+  private apiUrl = '/api/v1/project';
+  private baseUrl = `${this.hostName}${this.apiUrl}`;
+  private httpOptions;
 
   constructor(private httpClient: HttpClient) {
     this.httpOptions = {
@@ -16,22 +20,22 @@ export class ProjectService {
     };
   }
 
-  getProjects() {
+  public getProjects(): Observable<IProject[]> {
     const url = `${this.baseUrl}/projects`;
-    return this.httpClient.get(url);
+    return this.httpClient.get<IProject[]>(url);
   }
 
-  getProject(id: number) {
+  public getProject(id: number): Observable<IProject> {
     const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.get(url);
+    return this.httpClient.get<IProject>(url);
   }
 
-  updateProject(id: number, project: any) {
+  public updateProject(id: number, project: any): Observable<any> {
     const url = `${this.baseUrl}/${id}`;
     return this.httpClient.put(url, project, this.httpOptions);
   }
 
-  deleteProject(id: number) {
+  public deleteProject(id: number): Observable<any> {
     const url = `${this.baseUrl}/${id}`;
     return this.httpClient.delete(url, this.httpOptions);
   }

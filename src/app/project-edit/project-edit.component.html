@@ -1,0 +1,52 @@
+<div *ngIf="project$ | async; then show; else loading"></div>
+<ng-template #show>
+    <div class="root">
+        <form [formGroup]="form" (ngSubmit)="updateProject()">
+            <div>
+                <label for="name">
+                    Name
+                </label>
+                <input id="name" type="text" formControlName="name" />
+            </div>
+            <div>
+                <label for="description">
+                    Description
+                </label>
+                <input id="description" type="text" formControlName="description" />
+            </div>
+            <div>
+                <label for="startDate">
+                    Start date
+                </label>
+                <input id="startDate" type="text" formControlName="startDate" />
+            </div>
+            <div>
+                <label for="endDate">
+                    End date
+                </label>
+                <input id="endDate" type="text" formControlName="endDate" />
+            </div>
+            <div>
+                <label for="ownerName">
+                    Owner
+                </label>
+                <input id="ownerName" type="text" formControlName="ownerName" />
+            </div>
+            <div>
+                <label for="status">
+                    Status
+                </label>
+                <input id="status" type="text" formControlName="status" />
+            </div>
+            <div>
+                <button class="leftButton" type="submit">
+                    Update project
+                </button>
+                <button [routerLink]="['../']">Cancel</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<ng-template #loading>
+    <h3>Loading...</h3>
+</ng-template>
