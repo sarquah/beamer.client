@@ -9,13 +9,13 @@ import { IProject } from './../IProject';
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
-  public projects: Observable<IProject[]>;
+  public projects$: Observable<IProject[]>;
 
   constructor(
     private projectService: ProjectService
   ) { }
 
   public ngOnInit() {
-    this.projects = this.projectService.getProjects();
+    this.projects$ = this.projectService.getProjects();
   }
 }

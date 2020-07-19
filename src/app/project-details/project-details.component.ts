@@ -1,72 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from './../project.service';
 import { IProject } from '../iproject';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-project-details',
   templateUrl: './project-details.component.html',
-  styleUrls: ['./project-details.component.scss']
+  styleUrls: ['./project-details.component.scss'],
 })
-export class ProjectDetailsComponent implements OnInit {
-  project: IProject;
-  projectObservable: Observable<any>;
-  updateForm: FormGroup;
-  editMode: boolean;
+export class ProjectDetailsComponent implements OnInit, OnDestroy {
+  public project$: Observable<IProject>;
+  public form: FormGroup;
+  private subscriptions: Subscription[];
+  private id: number;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
     private formBuilder: FormBuilder
-  ) {
-    this.updateForm = this.formBuilder.group({
-      name: '',
-      description: '',
-      owner: ''
-    });
-    this.editMode = false;
-  }
+  ) {}
 
   public ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      const id = parseInt(params.get('id'), 10);
-      this.projectObservable = this.projectService.getProject(id);
-      this.projectObservable.subscribe((data: any) => {
-        this.project = {
-          id: data.id,
-          name: data.name,
-          owner: data.ownerName,
-          description: data.description
-        };
-      });
-    });
-  }
-
-  public updateProject(id: number, project: any) {
-    this.switchEditMode();
-    project.id = id;
-    const updatedProjectObservable = this.projectService.updateProject(
-      id,
-      project
+    this.form = this.createForm();
+    this.subscriptions = [];
+    this.subscriptions.push(
+      this.route.paramMap.subscribe((params) => {
+        this.id = parseInt(params.get('id'), 10);
+        this.project$ = this.projectService.getProject(this.id);
+      })
     );
-    updatedProjectObservable.subscribe(data => {
-      this.project = project;
+  }
+
+  public ngOnDestroy() {
+    this.subscriptions.map((x) => {
+      if (x) {
+        x.unsubscribe();
+      }
     });
   }
 
-  public deleteProject(id: number) {
-    const deletedProjectObservable = this.projectService.deleteProject(id);
-    deletedProjectObservable.subscribe(data => {
-      this.project = null;
-      this.projectObservable = null;
-      this.router.navigate(['./projects']);
-    });
+  public deleteProject() {
+    this.project$ = this.projectService.deleteProject(this.id);
+    this.router.navigate(['./projects']);
   }
 
-  public switchEditMode() {
-    this.editMode = !this.editMode;
+  private createForm(): FormGroup {
+    return this.formBuilder.group({
+      name: '',
+      description: '',
+      owner: '',
+    });
   }
 }

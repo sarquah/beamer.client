@@ -32,18 +32,18 @@ export class ProjectEditComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      const id = parseInt(params.get('id'), 10);
-      this.projectObservable = this.projectService.getProject(id);
-      this.projectObservable.subscribe((data: any) => {
-        this.project = {
-          id: data.id,
-          name: data.name,
-          owner: data.ownerName,
-          description: data.description
-        };
-      });
-    });
+    // this.route.paramMap.subscribe(params => {
+    //   const id = parseInt(params.get('id'), 10);
+    //   this.projectObservable = this.projectService.getProject(id);
+    //   this.projectObservable.subscribe((data: any) => {
+    //     this.project = {
+    //       id: data.id,
+    //       name: data.name,
+    //       owner: data.ownerName,
+    //       description: data.description
+    //     };
+    //   });
+    // });
   }
 
   public updateProject(id: number, project: any) {
