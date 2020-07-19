@@ -6,22 +6,25 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ProjectsComponent } from './projects/projects.component';
-import { RouterModule } from '@angular/router';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
+import { ProjectEditComponent } from './project-edit/project-edit.component';
 
 @NgModule({
-  declarations: [AppComponent, ProjectsComponent, ProjectDetailsComponent],
+  declarations: [
+    AppComponent,
+    ProjectsComponent,
+    ProjectDetailsComponent,
+    ProjectEditComponent
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    RouterModule.forRoot([
-      { path: 'projects', component: ProjectsComponent },
-      { path: 'projects/:id', component: ProjectDetailsComponent }
-    ])
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ],
 })
 export class AppModule {}

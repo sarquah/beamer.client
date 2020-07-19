@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService } from './../project.service';
 import { IProject } from '../iproject';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProjectService } from '../project.service';
 
 @Component({
-  selector: 'app-project-details',
-  templateUrl: './project-details.component.html',
-  styleUrls: ['./project-details.component.scss']
+  selector: 'app-project-edit',
+  templateUrl: './project-edit.component.html',
+  styleUrls: ['./project-edit.component.scss']
 })
-export class ProjectDetailsComponent implements OnInit {
+export class ProjectEditComponent implements OnInit {
+
   project: IProject;
   projectObservable: Observable<any>;
   updateForm: FormGroup;
