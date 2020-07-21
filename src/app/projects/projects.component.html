@@ -1,5 +1,6 @@
 <div class="root">
   <h2>Projects</h2>
+  <button [routerLink]="['/projects', 'create']">Create project</button>
   <div *ngFor="let project of projects$ | async" class="project">
     <h3>
       <a [title]="project.name + ' details'" [routerLink]="['/projects', project.id]">
