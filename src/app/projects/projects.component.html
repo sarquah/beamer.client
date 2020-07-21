@@ -1,21 +1,28 @@
-<div class="root">
-  <h2>Projects</h2>
-  <button mat-raised-button color="primary" [routerLink]="['/projects', 'create']">Create project</button>
-  <mat-card *ngFor="let project of projects$ | async" class="project">
-    <mat-card-header>
-      <div mat-card-avatar class="header-image"></div>
-      <mat-card-title [title]="project.name + ' details'">
-        {{ project.name }}
-      </mat-card-title>
-      <mat-card-subtitle>{{ project.description }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Owner: {{ project.ownerName }}</p>
-      <p>Status: {{ EStatus[project.status] }}</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-stroked-button color="primary" [routerLink]="['/projects', project.id]">View project</button>
-      <button mat-stroked-button color="primary" [routerLink]="['/projects', project.id, 'edit']">Edit project</button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+<div *ngIf="projects$ | async; then show; else loading"></div>
+<ng-template #show>
+  <div class="root">
+    <h2>Projects</h2>
+    <button mat-raised-button color="primary" [routerLink]="['/projects', 'create']">Create project</button>
+    <mat-card *ngFor="let project of projects$ | async" class="project">
+      <mat-card-header>
+        <div mat-card-avatar class="header-image"></div>
+        <mat-card-title [title]="project.name + ' details'">
+          {{ project.name }}
+        </mat-card-title>
+        <mat-card-subtitle>{{ project.description }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Owner: {{ project.ownerName }}</p>
+        <p>Status: {{ EStatus[project.status] }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button color="primary" [routerLink]="['/projects', project.id]">View project</button>
+        <button mat-stroked-button color="primary" [routerLink]="['/projects', project.id, 'edit']">Edit
+          project</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</ng-template>
+<ng-template #loading>
+  <mat-spinner class="paddingTen"></mat-spinner>
+</ng-template>
