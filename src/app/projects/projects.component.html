@@ -1,13 +1,21 @@
 <div class="root">
   <h2>Projects</h2>
-  <button [routerLink]="['/projects', 'create']">Create project</button>
-  <div *ngFor="let project of projects$ | async" class="project">
-    <h3>
-      <a [title]="project.name + ' details'" [routerLink]="['/projects', project.id]">
+  <button mat-raised-button color="primary" [routerLink]="['/projects', 'create']">Create project</button>
+  <mat-card *ngFor="let project of projects$ | async" class="project">
+    <mat-card-header>
+      <div mat-card-avatar class="header-image"></div>
+      <mat-card-title [title]="project.name + ' details'">
         {{ project.name }}
-      </a>
-    </h3>
-    <p>Owner: {{ project.ownerName }}</p>
-    <p *ngIf="project.description">{{ project.description }}</p>
-  </div>
+      </mat-card-title>
+      <mat-card-subtitle>{{ project.description }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Owner: {{ project.ownerName }}</p>
+      <p>Status: {{ EStatus[project.status] }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-stroked-button color="primary" [routerLink]="['/projects', project.id]">View project</button>
+      <button mat-stroked-button color="primary" [routerLink]="['/projects', project.id, 'edit']">Edit project</button>
+    </mat-card-actions>
+  </mat-card>
 </div>
