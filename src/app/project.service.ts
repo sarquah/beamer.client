@@ -2,21 +2,26 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IProject } from './models/interfaces/IProject';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { environment } from './../environments/environment';
 
+type ProjectFormControls = { [field in keyof IProject]?: FormControl };
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProjectService {
-  private hostName = 'http://localhost:65100';
-  private apiUrl = '/api/v1/project';
-  private baseUrl = `${this.hostName}${this.apiUrl}`;
+  private apiUrl = 'api/v1/project';
+  private baseUrl = `${environment.hostName}/${this.apiUrl}`;
   private httpOptions;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private formBuilder: FormBuilder
+  ) {
     this.httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
+        'Content-Type': 'application/json',
+      }),
     };
   }
 
@@ -30,15 +35,29 @@ export class ProjectService {
     return this.httpClient.get<IProject>(url);
   }
 
-  public updateProject(id: number, project: any): Observable<any> {
+  public updateProject(id: number, project: IProject): Observable<any> {
     const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.put(url, project, this.httpOptions);
+    return this.httpClient.put<IProject>(url, project, this.httpOptions);
   }
 
   public deleteProject(id: number): Observable<any> {
     const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.delete(url, this.httpOptions);
+    return this.httpClient.delete<number>(url, this.httpOptions);
   }
 
-  // TODO add functionality to create project
+  public createProject(project: IProject): Observable<IProject> {
+    return this.httpClient.post<IProject>(this.baseUrl, project);
+  }
+
+  public createForm(): FormGroup {
+    const formControls: ProjectFormControls = {
+      name: new FormControl(null),
+      description: new FormControl(null),
+      ownerName: new FormControl(null),
+      startDate: new FormControl(null),
+      endDate: new FormControl(null),
+      status: new FormControl(null),
+    };
+    return this.formBuilder.group(formControls);
+  }
 }

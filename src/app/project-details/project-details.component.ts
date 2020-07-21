@@ -25,12 +25,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.subscriptions = [];
-    this.subscriptions.push(
-      this.route.paramMap.subscribe((params) => {
-        this.id = parseInt(params.get('id'), 10);
-        this.project$ = this.projectService.getProject(this.id);
-      })
-    );
+    this.id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
+    this.project$ = this.projectService.getProject(this.id);
   }
 
   public ngOnDestroy() {
@@ -45,7 +41,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.projectService
         .deleteProject(this.id)
-        .subscribe((x) => this.router.navigate(['./projects']))
+        .subscribe(() => this.router.navigate(['./projects']))
     );
   }
 }
