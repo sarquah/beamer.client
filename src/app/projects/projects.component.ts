@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from './../project.service';
 import { Observable } from 'rxjs';
 import { IProject } from '../models/interfaces/IProject';
 import { EStatus } from '../models/enums/EStatus';
+import { ProjectService } from '../services/project.service';
 
 @Component({
   selector: 'app-projects',

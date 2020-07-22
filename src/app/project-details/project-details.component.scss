@@ -1,8 +1,11 @@
 .root {
-  padding: 0px 0px 15px 10px;
-  margin: 0 0 15px 0px;
-  border: 1px solid;
+  padding: 10px;  
 }
-.leftButton {
-  margin: 0 15px 0 0;
+.project {
+  max-width: 400px;
+  margin-top: 10px;
+}
+.header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
 }

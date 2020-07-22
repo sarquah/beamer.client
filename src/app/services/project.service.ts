@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IProject } from './models/interfaces/IProject';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
-import { environment } from './../environments/environment';
+import { IProject } from '../models/interfaces/IProject';
+import { environment } from 'src/environments/environment';
 
 type ProjectFormControls = { [field in keyof IProject]?: FormControl };
 @Injectable({

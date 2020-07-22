@@ -1,6 +1,6 @@
-import { ITask } from './ITask';
+import { IProject } from './IProject';
 
-export interface IProject {
+export interface ITask {
   id?: number;
   name?: string;
   ownerName?: string;
@@ -8,5 +8,5 @@ export interface IProject {
   status?: string;
   startDate?: Date;
   endDate?: Date;
-  tasks?: ITask[];
+  project?: IProject;
 }
