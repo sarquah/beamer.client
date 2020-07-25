@@ -1,16 +1,30 @@
 <div *ngIf="project$ | async; then show; else loading"></div>
 <ng-template #show>
   <div class="root">
-    <h3>{{ (project$ | async)?.name}}</h3>
-    <p>Owner: {{ (project$ | async)?.ownerName }}</p>
-    <p>{{ (project$ | async)?.description }}</p>
-    <p>Start date: {{ (project$ | async)?.startDate | date }}</p>
-    <p>End date: {{ (project$ | async)?.endDate | date}}</p>
-    <p>Status: {{ EStatus[(project$ | async)?.status] }}</p>
-    <button [routerLink]="['edit']" class="leftButton">Edit project</button>
-    <button (click)="deleteProject()">Delete project</button>
+    <mat-card class="project">
+      <mat-card-header>
+        <div mat-card-avatar class="header-image"></div>
+        <mat-card-title>
+          {{ (project$ | async)?.name}}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{ (project$ | async)?.description }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Owner: {{ (project$ | async)?.ownerName }}</p>
+        <p>Status: {{ EStatus[(project$ | async)?.status] }}</p>
+        <p>Start date: {{ (project$ | async)?.startDate | date }}</p>
+        <p>End date: {{ (project$ | async)?.endDate | date}}</p>
+        <p>Tasks....</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button color="warn" (click)="deleteProject()">Delete project</button>
+        <button mat-stroked-button color="primary" [routerLink]="['edit']">Edit project</button>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </ng-template>
 <ng-template #loading>
-  <h3>Loading...</h3>
+  <mat-spinner></mat-spinner>
 </ng-template>

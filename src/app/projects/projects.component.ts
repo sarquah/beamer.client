@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from './../project.service';
 import { Observable } from 'rxjs';
 import { IProject } from '../models/interfaces/IProject';
+import { EStatus } from '../models/enums/EStatus';
+import { ProjectService } from '../services/project.service';
 
 @Component({
   selector: 'app-projects',
@@ -10,6 +11,7 @@ import { IProject } from '../models/interfaces/IProject';
 })
 export class ProjectsComponent implements OnInit {
   public projects$: Observable<IProject[]>;
+  public EStatus = EStatus;
 
   constructor(
     private projectService: ProjectService

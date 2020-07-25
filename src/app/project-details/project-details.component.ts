@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService } from './../project.service';
 import { IProject } from '../models/interfaces/IProject';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { EStatus } from '../models/enums/EStatus';
+import { ProjectService } from '../services/project.service';
 
 @Component({
   selector: 'app-project-details',

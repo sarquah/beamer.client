@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService } from '../project.service';
 import { OnDestroy } from '@angular/core';
 import { IProject } from './../models/interfaces/IProject';
+import { ProjectService } from '../services/project.service';
 
 @Component({
   selector: 'app-project-edit',

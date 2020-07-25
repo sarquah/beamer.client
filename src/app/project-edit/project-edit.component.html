@@ -1,52 +1,41 @@
 <div *ngIf="project$ | async; then show; else loading"></div>
 <ng-template #show>
     <div class="root">
-        <form [formGroup]="form" (ngSubmit)="updateProject()">
-            <div>
-                <label for="name">
-                    Name
-                </label>
-                <input id="name" type="text" formControlName="name" />
-            </div>
-            <div>
-                <label for="description">
-                    Description
-                </label>
-                <input id="description" type="text" formControlName="description" />
-            </div>
-            <div>
-                <label for="startDate">
-                    Start date
-                </label>
-                <input id="startDate" type="text" formControlName="startDate" />
-            </div>
-            <div>
-                <label for="endDate">
-                    End date
-                </label>
-                <input id="endDate" type="text" formControlName="endDate" />
-            </div>
-            <div>
-                <label for="ownerName">
-                    Owner
-                </label>
-                <input id="ownerName" type="text" formControlName="ownerName" />
-            </div>
-            <div>
-                <label for="status">
-                    Status
-                </label>
-                <input id="status" type="text" formControlName="status" />
-            </div>
-            <div>
-                <button class="leftButton" type="submit">
-                    Update project
-                </button>
-                <button [routerLink]="['../']">Cancel</button>
-            </div>
-        </form>
+        <mat-card>
+            <form [formGroup]="form" (ngSubmit)="updateProject()">
+                <mat-form-field appearance="standard" class="input">
+                    <mat-label>Name</mat-label>
+                    <input matInput id="name" formControlName="name" />
+                </mat-form-field>
+                <mat-form-field appearance="standard" class="input">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput id="description" formControlName="description"></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="standard" class="input">
+                    <mat-label>Start and end date</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate placeholder="Start date" id="startDate" formControlName="startDate">
+                        <input matEndDate placeholder="End date" id="endDate" formControlName="endDate">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+                <mat-form-field appearance="standard" class="input">
+                    <mat-label>Owner</mat-label>
+                    <input matInput id="ownerName" formControlName="ownerName" />
+                </mat-form-field>
+                <mat-form-field appearance="standard" class="input">
+                    <mat-label>Status</mat-label>
+                    <input matInput id="status" formControlName="status" />
+                </mat-form-field>
+                <div class="buttons">
+                    <button mat-stroked-button color="warn" [routerLink]="['../']">Cancel</button>
+                    <button mat-stroked-button color="primary" type="submit">Update project</button>
+                </div>
+            </form>
+        </mat-card>
     </div>
 </ng-template>
 <ng-template #loading>
-    <h3>Loading...</h3>
+    <mat-spinner></mat-spinner>
 </ng-template>
