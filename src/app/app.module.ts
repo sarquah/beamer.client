@@ -16,6 +16,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { EnumPipe } from './pipes/enum.pipe';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { MatInputModule } from '@angular/material/input';
     ProjectDetailsComponent,
     ProjectEditComponent,
     ProjectCreateComponent,
+    EnumPipe,
   ],
   imports: [
     BrowserModule,

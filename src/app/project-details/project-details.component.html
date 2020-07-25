@@ -13,7 +13,7 @@
       </mat-card-header>
       <mat-card-content>
         <p>Owner: {{ (project$ | async)?.ownerName }}</p>
-        <p>Status: {{ EStatus[(project$ | async)?.status] }}</p>
+        <p>Status: {{ EStatus[(project$ | async)?.status] | enum  }}</p>
         <p>Start date: {{ (project$ | async)?.startDate | date }}</p>
         <p>End date: {{ (project$ | async)?.endDate | date}}</p>
         <p>Tasks....</p>
