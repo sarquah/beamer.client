@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OnDestroy } from '@angular/core';
 import { IProject } from './../models/interfaces/IProject';
 import { ProjectService } from '../services/project.service';
+import { EStatus } from '../models/enums/EStatus';
 
 @Component({
   selector: 'app-project-edit',
@@ -14,6 +15,7 @@ import { ProjectService } from '../services/project.service';
 export class ProjectEditComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public project$: Observable<IProject>;
+  public EStatus = EStatus;
   private id: number;
   private subscriptions: Subscription[];
 

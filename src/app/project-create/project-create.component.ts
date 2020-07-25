@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { IProject } from '../models/interfaces/IProject';
 import { Router } from '@angular/router';
 import { ProjectService } from '../services/project.service';
+import { EStatus } from '../models/enums/EStatus';
 
 @Component({
   selector: 'app-project-create',
@@ -12,6 +13,7 @@ import { ProjectService } from '../services/project.service';
 })
 export class ProjectCreateComponent implements OnInit, OnDestroy {
   public form: FormGroup;
+  public EStatus = EStatus;
   private subscriptions: Subscription[];
 
   constructor(
