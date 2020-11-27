@@ -53,7 +53,7 @@ export class ProjectService {
     const formControls: ProjectFormControls = {
       name: new FormControl(null),
       description: new FormControl(null),
-      ownerName: new FormControl(null),
+      ownerId: new FormControl(null),
       startDate: new FormControl(null),
       endDate: new FormControl(null),
       status: new FormControl(null),
