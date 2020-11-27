@@ -24,7 +24,10 @@
             </mat-form-field>
             <mat-form-field appearance="standard" class="input">
                 <mat-label>Status</mat-label>
-                <input matInput id="status" formControlName="status" />
+                <mat-select matInput id="status" formControlName="status">
+                    <mat-option *ngFor="let status of EStatus | enumToArray" value="{{status.index}}">
+                        {{ status.name | enum }}</mat-option>
+                </mat-select>
             </mat-form-field>
             <div class="buttons">
                 <button mat-stroked-button color="warn" [routerLink]="['../']">Cancel</button>

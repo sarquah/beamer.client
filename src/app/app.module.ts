@@ -2,21 +2,23 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { EnumPipe } from './pipes/enum.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { NgModule } from '@angular/core';
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MatInputModule } from '@angular/material/input';
-import { EnumPipe } from './pipes/enum.pipe';
+import { EnumToArrayPipe } from './pipes/enum-to-array.pipe';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { EnumPipe } from './pipes/enum.pipe';
     ProjectEditComponent,
     ProjectCreateComponent,
     EnumPipe,
+    EnumToArrayPipe,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +43,7 @@ import { EnumPipe } from './pipes/enum.pipe';
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
+    MatSelectModule
   ],
   providers: [
     {

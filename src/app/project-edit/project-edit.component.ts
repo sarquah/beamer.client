@@ -5,6 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OnDestroy } from '@angular/core';
 import { IProject } from './../models/interfaces/IProject';
 import { ProjectService } from '../services/project.service';
+import { EStatus } from '../models/enums/EStatus';
+import { IUser } from '../models/interfaces/IUser';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-project-edit',
@@ -14,13 +17,16 @@ import { ProjectService } from '../services/project.service';
 export class ProjectEditComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public project$: Observable<IProject>;
+  public user$: Observable<IUser[]>;
+  public EStatus = EStatus;
   private id: number;
   private subscriptions: Subscription[];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private userService: UserService
   ) {}
 
   public ngOnDestroy() {
@@ -36,8 +42,10 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
     this.id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
     this.project$ = this.projectService.getProject(this.id);
+    this.user$ = this.userService.getUsers();
     this.subscriptions.push(
-      this.project$.subscribe((x) => this.form.patchValue(x))
+      this.project$.subscribe((x) => this.form.patchValue(x)),
+      this.user$.subscribe()
     );
   }
 
