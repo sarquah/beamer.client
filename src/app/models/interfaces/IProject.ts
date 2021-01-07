@@ -1,3 +1,4 @@
+import { EStatus } from '../enums/EStatus';
 import { ITask } from './ITask';
 
 export interface IProject {
@@ -5,7 +6,7 @@ export interface IProject {
   name?: string;
   ownerId?: number;
   description?: string;
-  status?: string;
+  status?: EStatus;
   startDate?: Date;
   endDate?: Date;
   tasks?: ITask[];
