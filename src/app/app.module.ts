@@ -19,6 +19,12 @@ import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EnumToArrayPipe } from './pipes/enum-to-array.pipe';
+import { TaskDetailsComponent } from './task-details/task-details.component';
+import { ProjectComponent } from './project/project.component';
+import { MatTableModule } from '@angular/material/table';
+import { CdkTableModule } from '@angular/cdk/table';
+import { TasksComponent } from './tasks/tasks.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -29,6 +35,9 @@ import { EnumToArrayPipe } from './pipes/enum-to-array.pipe';
     ProjectCreateComponent,
     EnumPipe,
     EnumToArrayPipe,
+    TaskDetailsComponent,
+    ProjectComponent,
+    TasksComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +52,10 @@ import { EnumToArrayPipe } from './pipes/enum-to-array.pipe';
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTableModule,
+    CdkTableModule,
+    MatIconModule
   ],
   providers: [
     {
@@ -53,4 +65,4 @@ import { EnumToArrayPipe } from './pipes/enum-to-array.pipe';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

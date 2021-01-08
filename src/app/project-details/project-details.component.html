@@ -5,7 +5,7 @@
       <mat-card-header>
         <div mat-card-avatar class="header-image"></div>
         <mat-card-title>
-          {{ (project$ | async)?.name}}
+          {{ (project$ | async)?.name }}
         </mat-card-title>
         <mat-card-subtitle>
           {{ (project$ | async)?.description }}
@@ -13,16 +13,20 @@
       </mat-card-header>
       <mat-card-content>
         <p>Owner: {{ (project$ | async)?.ownerName }}</p>
-        <p>Status: {{ EStatus[(project$ | async)?.status] | enum  }}</p>
+        <p>Status: {{ EStatus[(project$ | async)?.status] | enum }}</p>
         <p>Start date: {{ (project$ | async)?.startDate | date }}</p>
-        <p>End date: {{ (project$ | async)?.endDate | date}}</p>
-        <p>Tasks....</p>
+        <p>End date: {{ (project$ | async)?.endDate | date }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-stroked-button color="warn" (click)="deleteProject()">Delete project</button>
-        <button mat-stroked-button color="primary" [routerLink]="['edit']">Edit project</button>
+        <button mat-stroked-button color="warn" (click)="deleteProject()">
+          Delete project
+        </button>
+        <button mat-stroked-button color="primary" [routerLink]="['edit']">
+          Edit project
+        </button>
       </mat-card-actions>
     </mat-card>
+    <app-tasks [project]="project$"></app-tasks>
   </div>
 </ng-template>
 <ng-template #loading>
