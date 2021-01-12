@@ -2,6 +2,7 @@ import { Input, OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription } from 'rxjs';
+import { EStatus } from '../models/enums/EStatus';
 import { IProject } from '../models/interfaces/IProject';
 import { ITask } from '../models/interfaces/ITask';
 
@@ -12,8 +13,9 @@ import { ITask } from '../models/interfaces/ITask';
 })
 export class TasksComponent implements OnInit, OnDestroy {
   @Input() project: Observable<IProject>;
-  public displayedColumns: string[] = ['name', 'description', 'owner', 'startDate', 'endDate', 'edit', 'delete'];
+  public displayedColumns: string[] = ['name', 'description', 'status', 'owner', 'startDate', 'endDate', 'edit', 'delete'];
   public dataSource: MatTableDataSource<ITask>;
+  public EStatus = EStatus;
   private subscriptions: Subscription[];
 
   constructor() { }
@@ -35,4 +37,7 @@ export class TasksComponent implements OnInit, OnDestroy {
     });
   }
 
+  public delete(id: number) {
+    console.log('Deleting ', id);
+  }
 }

@@ -25,6 +25,7 @@ import { MatTableModule } from '@angular/material/table';
 import { CdkTableModule } from '@angular/cdk/table';
 import { TasksComponent } from './tasks/tasks.component';
 import { MatIconModule } from '@angular/material/icon';
+import { TaskEditComponent } from './task-edit/task-edit.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { MatIconModule } from '@angular/material/icon';
     TaskDetailsComponent,
     ProjectComponent,
     TasksComponent,
+    TaskEditComponent,
   ],
   imports: [
     BrowserModule,

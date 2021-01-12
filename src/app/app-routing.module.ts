@@ -4,6 +4,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
+import { TaskEditComponent } from './task-edit/task-edit.component';
 
 const routes: Routes = [
   {
@@ -32,10 +33,24 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'tasks',
+    children: [
+      {
+        path: ':id',
+        children: [
+          {
+            path: 'edit',
+            component: TaskEditComponent,
+          },
+        ],
+      },
+    ],
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
