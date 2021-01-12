@@ -4,9 +4,7 @@
     <h2>Projects</h2>
     <button mat-raised-button color="primary" [routerLink]="['/projects', 'create']">Create project</button>
     <app-project *ngFor="let project of projects$ | async" [project]="project"></app-project>
-  </div>
-  <div class="footer">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from
-    <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+  </div>  
 </ng-template>
 <ng-template #loading>
   <mat-spinner></mat-spinner>

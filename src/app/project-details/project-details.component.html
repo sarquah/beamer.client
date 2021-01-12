@@ -24,6 +24,9 @@
         <button mat-stroked-button color="primary" [routerLink]="['edit']">
           Edit project
         </button>
+        <button mat-stroked-button color="primary" [routerLink]="['/tasks/create']">
+          Create task
+        </button>
       </mat-card-actions>
     </mat-card>
     <app-tasks [project]="project$"></app-tasks>
