@@ -1,0 +1,54 @@
+<div *ngIf="task$ | async; then show; else loading"></div>
+<ng-template #show>
+    <div class="root">
+        <mat-card>
+            <form [formGroup]="form" (ngSubmit)="updateTask()">
+                <mat-form-field appearance="standard" class="input">
+                    <mat-label>Project</mat-label>
+                    <mat-select matInput id="projectId" formControlName="projectId">
+                    <mat-option *ngFor="let project of projects$ | async" [value]="project.id">
+                        {{ project.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="standard" class="input">
+                    <mat-label>Name</mat-label>
+                    <input matInput id="name" formControlName="name" />
+                </mat-form-field>
+                <mat-form-field appearance="standard" class="input">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput id="description" formControlName="description"></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="standard" class="input">
+                    <mat-label>Start and end date</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate placeholder="Start date" id="startDate" formControlName="startDate">
+                        <input matEndDate placeholder="End date" id="endDate" formControlName="endDate">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+                <mat-form-field appearance="standard" class="input">
+                    <mat-label>Owner</mat-label>
+                    <mat-select matInput id="ownerId" formControlName="ownerId">
+                    <mat-option *ngFor="let user of users$ | async" [value]="user.id">
+                        {{ user.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="standard" class="input">
+                    <mat-label>Status</mat-label>
+                    <mat-select matInput id="status" formControlName="status">
+                        <mat-option *ngFor="let status of EStatus | enumToArray" [value]="status.index">
+                            {{ status.name | enum }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="buttons">
+                    <button mat-stroked-button color="warn" [routerLink]="['./projects']">Cancel</button>
+                    <button mat-stroked-button color="primary" type="submit">Update task</button>
+                </div>
+            </form>
+        </mat-card>
+    </div>
+</ng-template>
+<ng-template #loading>
+    <mat-spinner></mat-spinner>
+</ng-template>
