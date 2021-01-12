@@ -11,13 +11,12 @@ import { TaskService } from '../services/task.service';
 import { UserService } from '../services/user.service';
 
 @Component({
-  selector: 'app-task-edit',
-  templateUrl: './task-edit.component.html',
-  styleUrls: ['./task-edit.component.scss']
+  selector: 'app-task-create',
+  templateUrl: './task-create.component.html',
+  styleUrls: ['./task-create.component.scss']
 })
-export class TaskEditComponent implements OnInit, OnDestroy {
+export class TaskCreateComponent implements OnInit, OnDestroy {
   public form: FormGroup;
-  public task$: Observable<IProject>;
   public users$: Observable<IUser[]>;
   public projects$: Observable<IProject[]>;
   public EStatus = EStatus;
@@ -44,22 +43,19 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     this.form = this.taskService.createForm();
     this.subscriptions = [];
     this.id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-    this.task$ = this.taskService.getTask(this.id);
     this.users$ = this.userService.getUsers();
     this.projects$ = this.projectService.getProjects();
     this.subscriptions.push(
-      this.task$.subscribe((x) => this.form.patchValue(x)),
       this.users$.subscribe(),
       this.projects$.subscribe()
     );
   }
 
-  public updateTask() {
+  public createTask() {
     const task: ITask = this.form.value;
-    task.id = this.id;
     this.subscriptions.push(
       this.taskService
-        .updateTask(this.id, task)
+        .createTask(task)
         .subscribe(() => {
           this.router.navigate(['./projects'])
         })

@@ -5,6 +5,7 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
 import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { TaskEditComponent } from './task-edit/task-edit.component';
+import { TaskCreateComponent } from './task-create/task-create.component';
 
 const routes: Routes = [
   {
@@ -37,14 +38,18 @@ const routes: Routes = [
     path: 'tasks',
     children: [
       {
+        path: 'create',
+        component: TaskCreateComponent,
+      },
+      {
         path: ':id',
         children: [
           {
             path: 'edit',
             component: TaskEditComponent,
-          },
+          }
         ],
-      },
+      }
     ],
   }
 ];
