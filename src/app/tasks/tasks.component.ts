@@ -1,10 +1,12 @@
 import { Input, OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { EStatus } from '../models/enums/EStatus';
 import { IProject } from '../models/interfaces/IProject';
 import { ITask } from '../models/interfaces/ITask';
+import { TaskService } from '../services/task.service';
 
 @Component({
   selector: 'app-tasks',
@@ -18,7 +20,11 @@ export class TasksComponent implements OnInit, OnDestroy {
   public EStatus = EStatus;
   private subscriptions: Subscription[];
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private taskService: TaskService
+  ) { }
 
   public ngOnInit() {
     this.subscriptions = [];
@@ -37,7 +43,9 @@ export class TasksComponent implements OnInit, OnDestroy {
     });
   }
 
-  public delete(id: number) {
-    console.log('Deleting ', id);
+  public delete(task: ITask) {
+    this.taskService.deleteTask(task.id).subscribe(() => {
+      this.ngOnInit();
+    });
   }
 }
