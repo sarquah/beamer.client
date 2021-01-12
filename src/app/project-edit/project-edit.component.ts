@@ -1,3 +1,4 @@
+import { Location } from '@angular/common'
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
@@ -26,7 +27,8 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
-    private userService: UserService
+    private userService: UserService,
+    private location: Location
   ) {}
 
   public ngOnDestroy() {
@@ -55,7 +57,11 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.projectService
         .updateProject(this.id, project)
-        .subscribe(() => this.router.navigate(['./projects']))
+        .subscribe(() => this.goBack())
     );
+  }
+
+  public goBack() {
+    this.location.back();
   }
 }

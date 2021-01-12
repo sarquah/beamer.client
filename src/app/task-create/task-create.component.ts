@@ -1,3 +1,4 @@
+import { Location } from '@angular/common'
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,7 +29,8 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     private router: Router,
     private taskService: TaskService,
     private userService: UserService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private location: Location
   ) { }
 
   public ngOnDestroy() {
@@ -56,9 +58,11 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.taskService
         .createTask(task)
-        .subscribe(() => {
-          this.router.navigate(['./projects'])
-        })
+        .subscribe(() => this.goBack())
     );
+  }
+
+  public goBack() {
+    this.location.back();
   }
 }
