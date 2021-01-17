@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  hostName: 'http://localhost:65100'
+  beamerAPIEndpoint: 'http://localhost:65100',
+  beamerIdentityEndpoint: 'https://localhost:44305'
 };
 
 /*

@@ -11,7 +11,7 @@ type ProjectFormControls = { [field in keyof IProject]?: FormControl };
 })
 export class ProjectService {
   private apiUrl = 'api/v1/project';
-  private baseUrl = `${environment.hostName}/${this.apiUrl}`;
+  private baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
   private httpOptions;
 
   constructor(
