@@ -54,12 +54,14 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   }
 
   public createTask() {
-    const task: ITask = this.form.value;
-    this.subscriptions.push(
-      this.taskService
-        .createTask(task)
-        .subscribe(() => this.goBack())
-    );
+    if (this.form.valid) {
+      const task: ITask = this.form.value;
+      this.subscriptions.push(
+        this.taskService
+          .createTask(task)
+          .subscribe(() => this.goBack())
+      );
+    }
   }
 
   public goBack() {

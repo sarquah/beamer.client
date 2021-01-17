@@ -27,6 +27,8 @@ import { TasksComponent } from './tasks/tasks.component';
 import { MatIconModule } from '@angular/material/icon';
 import { TaskEditComponent } from './task-edit/task-edit.component';
 import { TaskCreateComponent } from './task-create/task-create.component';
+import { CoreModule } from 'src/core/modules/core.module';
+import { RegisterComponent } from '../core/register/register.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { TaskCreateComponent } from './task-create/task-create.component';
     TasksComponent,
     TaskEditComponent,
     TaskCreateComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,8 @@ import { TaskCreateComponent } from './task-create/task-create.component';
     MatSelectModule,
     MatTableModule,
     CdkTableModule,
-    MatIconModule
+    MatIconModule,
+    CoreModule
   ],
   providers: [
     {

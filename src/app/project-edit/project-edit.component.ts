@@ -29,7 +29,7 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private userService: UserService,
     private location: Location
-  ) {}
+  ) { }
 
   public ngOnDestroy() {
     this.subscriptions.map((x) => {
@@ -52,13 +52,15 @@ export class ProjectEditComponent implements OnInit, OnDestroy {
   }
 
   public updateProject() {
-    const project: IProject = this.form.value;
-    project.id = this.id;
-    this.subscriptions.push(
-      this.projectService
-        .updateProject(this.id, project)
-        .subscribe(() => this.goBack())
-    );
+    if (this.form.valid) {
+      const project: IProject = this.form.value;
+      project.id = this.id;
+      this.subscriptions.push(
+        this.projectService
+          .updateProject(this.id, project)
+          .subscribe(() => this.goBack())
+      );
+    }
   }
 
   public goBack() {

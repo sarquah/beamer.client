@@ -11,7 +11,7 @@ type TaskFormControls = { [field in keyof ITask]?: FormControl };
 })
 export class TaskService {
   private apiUrl = 'api/v1/task';
-  private baseUrl = `${environment.hostName}/${this.apiUrl}`;
+  private baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
   private httpOptions;
 
   constructor(

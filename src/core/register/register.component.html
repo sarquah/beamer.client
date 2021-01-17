@@ -1,0 +1,35 @@
+<mat-card class="form">
+  <form [formGroup]="form" (ngSubmit)="register()">
+    <mat-card-header>
+      <mat-card-title [title]="register">Register account</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-error *ngIf="errorMsg">{{errorMsg}}</mat-error>
+      <p *ngIf="successMsg" class="success">{{successMsg}}</p>
+      <mat-form-field appearance="standard" class="full-width">
+        <mat-label>Email</mat-label>
+        <input
+          type="email"
+          matInput
+          formControlName="userName"
+          placeholder="email@example.com"
+          required
+        />
+        <mat-error *ngIf="form.controls.userName.invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput formControlName="password" required />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Confirm password</mat-label>
+        <input type="password" matInput formControlName="confirmPassword" required />
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-stroked-button color="primary" type="submit">Register</button>
+    </mat-card-actions>
+  </form>
+</mat-card>

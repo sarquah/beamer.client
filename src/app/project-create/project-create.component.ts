@@ -23,7 +23,7 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
     private router: Router,
     private projectService: ProjectService,
     private userService: UserService
-  ) {}
+  ) { }
 
   public ngOnDestroy() {
     this.subscriptions.map((x) => {
@@ -43,11 +43,13 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
   }
 
   public createProject() {
-    const project: IProject = this.form.value;
-    this.subscriptions.push(
-      this.projectService
-        .createProject(project)
-        .subscribe(() => this.router.navigate(['./projects']))
-    );
+    if (this.form.valid) {
+      const project: IProject = this.form.value;
+      this.subscriptions.push(
+        this.projectService
+          .createProject(project)
+          .subscribe(() => this.router.navigate(['./projects']))
+      );
+    }
   }
 }

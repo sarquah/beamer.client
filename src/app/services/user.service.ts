@@ -9,7 +9,7 @@ import { IUser } from '../models/interfaces/IUser';
 })
 export class UserService {
   private apiUrl = 'api/v1/user';
-  private baseUrl = `${environment.hostName}/${this.apiUrl}`;
+  private baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
   private httpOptions;
 
   constructor(
