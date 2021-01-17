@@ -56,15 +56,17 @@ export class TaskEditComponent implements OnInit, OnDestroy {
   }
 
   public updateTask() {
-    const task: ITask = this.form.value;
-    task.id = this.id;
-    this.subscriptions.push(
-      this.taskService
-        .updateTask(this.id, task)
-        .subscribe(() => {
-          this.goBack()
-        })
-    );
+    if (this.form.valid) {
+      const task: ITask = this.form.value;
+      task.id = this.id;
+      this.subscriptions.push(
+        this.taskService
+          .updateTask(this.id, task)
+          .subscribe(() => {
+            this.goBack()
+          })
+      );
+    }
   }
 
   public goBack() {

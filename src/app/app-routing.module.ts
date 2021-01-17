@@ -6,6 +6,7 @@ import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { TaskEditComponent } from './task-edit/task-edit.component';
 import { TaskCreateComponent } from './task-create/task-create.component';
+import { RegisterComponent } from '../core/register/register.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,10 @@ const routes: Routes = [
         ],
       }
     ],
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   }
 ];
 
