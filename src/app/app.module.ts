@@ -28,7 +28,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { TaskEditComponent } from './task-edit/task-edit.component';
 import { TaskCreateComponent } from './task-create/task-create.component';
 import { CoreModule } from 'src/core/modules/core.module';
-import { RegisterComponent } from '../core/register/register.component';
 
 @NgModule({
   declarations: [
@@ -43,18 +42,16 @@ import { RegisterComponent } from '../core/register/register.component';
     ProjectComponent,
     TasksComponent,
     TaskEditComponent,
-    TaskCreateComponent,
-    RegisterComponent,
+    TaskCreateComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
+    CoreModule,
+    MatProgressSpinnerModule,
     MatCardModule,
     MatButtonModule,
-    MatProgressSpinnerModule,
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -63,7 +60,8 @@ import { RegisterComponent } from '../core/register/register.component';
     MatTableModule,
     CdkTableModule,
     MatIconModule,
-    CoreModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     {

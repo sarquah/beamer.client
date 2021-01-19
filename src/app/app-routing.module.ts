@@ -7,6 +7,7 @@ import { ProjectCreateComponent } from './project-create/project-create.componen
 import { TaskEditComponent } from './task-edit/task-edit.component';
 import { TaskCreateComponent } from './task-create/task-create.component';
 import { RegisterComponent } from '../core/register/register.component';
+import { LoginComponent } from 'src/core/login/login.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,10 @@ const routes: Routes = [
         ],
       }
     ],
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: 'register',

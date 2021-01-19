@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   public ngOnInit() {
-    this.form = this.authService.createForm();
+    this.form = this.authService.createRegisterForm();
   }
 
   public register() {
@@ -39,10 +39,10 @@ export class RegisterComponent implements OnInit {
   }
 
   public getErrorMessage() {
-    if (this.form.controls.userName.hasError('required')) {
+    if (this.form.controls.username.hasError('required')) {
       return 'You must enter a value';
     }
-    return this.form.controls.userName.hasError('email') ? 'Not a valid email' : '';
+    return this.form.controls.username.hasError('email') ? 'Not a valid email' : '';
   }
 
   private getServerErrorMessage(error: HttpErrorResponse): string {

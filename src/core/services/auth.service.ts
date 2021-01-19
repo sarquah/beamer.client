@@ -1,16 +1,17 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Subscription, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthStateModel } from '../models/auth-state-model';
-import { AuthTokenModel } from '../models/auth-token-model';
-import { LoginModel } from '../models/login-model';
+import { IAuthTokenModel } from '../models/auth-token-model';
+import { ILoginModel } from '../models/login-model';
 import { ProfileModel } from '../models/profile-model';
 import { RefreshGrantModel } from '../models/refresh-grant-model';
 import { IRegisterModel } from '../models/register-model';
 
 type RegisterFormControls = { [field in keyof IRegisterModel]?: FormControl };
+type LoginFormControls = { [field in keyof ILoginModel]?: FormControl };
 
 // @TODO Remove commented code
 @Injectable()
@@ -21,7 +22,7 @@ export class AuthService {
     private refreshSubscription$: Subscription;
 
     public state$: Observable<AuthStateModel>;
-    public tokens$: Observable<AuthTokenModel>;
+    public tokens$: Observable<IAuthTokenModel>;
     public profile$: Observable<ProfileModel>;
     public loggedIn$: Observable<boolean>;
 
@@ -48,15 +49,25 @@ export class AuthService {
         // this.loggedIn$ = this.tokens$.map(tokens => !!tokens);
     }
 
-    public createForm() {
+    public createRegisterForm(): FormGroup {
         const formControls: RegisterFormControls = {
-            userName: new FormControl(null, [
+            username: new FormControl(null, [
                 Validators.required,
                 Validators.email
             ]),
-            // @TODO Create validators for password length
             password: new FormControl(null, Validators.required),
             confirmPassword: new FormControl(null, Validators.required)
+        };
+        return this.formBuilder.group(formControls);
+    }
+
+    public createLoginForm(): FormGroup {
+        const formControls: LoginFormControls = {
+            username: new FormControl(null, [
+                Validators.required,
+                Validators.email
+            ]),
+            password: new FormControl(null, Validators.required)
         };
         return this.formBuilder.group(formControls);
     }
@@ -68,6 +79,22 @@ export class AuthService {
 
     public register(data: IRegisterModel): Observable<any> {
         return this.httpClient.post<IRegisterModel>(`${environment.beamerIdentityEndpoint}/account/register`, data);
+    }
+
+    public login(data: ILoginModel): Observable<IAuthTokenModel> {
+        const headers = new HttpHeaders()
+            .set('Content-Type', 'application/x-www-form-urlencoded');
+        const body = {
+            grant_type: 'password',
+            scope: 'openid offline_access',
+            ...data
+        };
+        const params = new URLSearchParams();
+        Object.keys(body)
+            .forEach(key => params.append(key, body[key]));
+        return this.httpClient.post<IAuthTokenModel>(`${environment.beamerIdentityEndpoint}/connect/token`, params.toString(), {
+            headers
+        });
     }
 
     // public login(user: LoginModel): Observable<any> {
