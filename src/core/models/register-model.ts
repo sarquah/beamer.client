@@ -1,5 +1,5 @@
 ﻿export interface IRegisterModel {
-    userName: string;
+    username: string;
     password: string;
     confirmPassword: string;
 }
