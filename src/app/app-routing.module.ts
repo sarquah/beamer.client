@@ -6,12 +6,12 @@ import { ProjectEditComponent } from './project-edit/project-edit.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { TaskEditComponent } from './task-edit/task-edit.component';
 import { TaskCreateComponent } from './task-create/task-create.component';
-import { RegisterComponent } from '../core/register/register.component';
-import { LoginComponent } from 'src/core/login/login.component';
+import { MsalGuard } from '@azure/msal-angular';
 
 const routes: Routes = [
   {
     path: 'projects',
+    canActivateChild: [MsalGuard],
     children: [
       {
         path: '',
@@ -38,6 +38,7 @@ const routes: Routes = [
   },
   {
     path: 'tasks',
+    canActivateChild: [MsalGuard],
     children: [
       {
         path: 'create',
@@ -53,14 +54,6 @@ const routes: Routes = [
         ],
       }
     ],
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'register',
-    component: RegisterComponent
   }
 ];
 

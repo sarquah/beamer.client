@@ -5,7 +5,15 @@
 export const environment = {
   production: false,
   beamerAPIEndpoint: 'http://localhost:65100',
-  beamerIdentityEndpoint: 'https://localhost:44305'
+  azure: {
+    cloudInstanceId: 'https://login.microsoftonline.com',
+    scopeUri: [
+      'api://e2a46ce5-1cd4-46e7-b7ed-e4fffd1d7f16/Beamer'
+    ],
+    tenantId: 'fb0d02c2-f1bf-4146-a18a-5ffe03bbb4e2',
+    clientId: 'c0c37e71-c7d8-4c9e-b9c7-cf74575d7ef6',
+    redirectUrl: 'http://localhost:4200'
+  }
 };
 
 /*
