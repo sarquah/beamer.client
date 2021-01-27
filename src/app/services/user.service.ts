@@ -26,4 +26,9 @@ export class UserService {
     const url = `${this.baseUrl}/users`;
     return this.httpClient.get<IUser[]>(url);
   }
+
+  public createUsers(users: IUser[]): Observable<IUser[]> {
+    const url = `${this.baseUrl}/users`;
+    return this.httpClient.post<IUser[]>(url, users);
+  }
 }

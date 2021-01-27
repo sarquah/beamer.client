@@ -31,12 +31,13 @@ import { TaskCreateComponent } from './task-create/task-create.component';
 import { TaskDetailsComponent } from './task-details/task-details.component';
 import { TaskEditComponent } from './task-edit/task-edit.component';
 import { TasksComponent } from './tasks/tasks.component';
+import { AdminComponent } from './admin/admin.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth: {
       clientId: environment.azure.clientId,
-      authority: `${environment.azure.cloudInstanceId}/${environment.azure.tenantId}`,
+      authority: `${environment.azure.cloudInstanceId}/${environment.azure.organizationsId}`,
       redirectUri: environment.azure.redirectUrl
     },
     cache: {
@@ -50,7 +51,8 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   return {
     interactionType: InteractionType.Popup,
     protectedResourceMap: new Map([
-      [environment.beamerAPIEndpoint, environment.azure.scopeUri]
+      [environment.beamerAPIEndpoint, environment.azure.scopeUri],
+      [environment.graphAPI.endpoint, environment.graphAPI.scopes]
     ])
   };
 }
@@ -74,7 +76,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     ProjectComponent,
     TasksComponent,
     TaskEditComponent,
-    TaskCreateComponent
+    TaskCreateComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

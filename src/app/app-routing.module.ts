@@ -7,8 +7,14 @@ import { ProjectCreateComponent } from './project-create/project-create.componen
 import { TaskEditComponent } from './task-edit/task-edit.component';
 import { TaskCreateComponent } from './task-create/task-create.component';
 import { MsalGuard } from '@azure/msal-angular';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
+  {
+    path: 'admin',
+    canActivate: [MsalGuard],
+    component: AdminComponent
+  },
   {
     path: 'projects',
     canActivateChild: [MsalGuard],

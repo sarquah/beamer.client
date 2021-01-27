@@ -1,0 +1,45 @@
+<div class="root">
+  <h2>Admin</h2>
+  <mat-card *ngIf="success" class="toast">
+    <mat-card-header>
+      <mat-card-title>{{ success }}</mat-card-title>
+    </mat-card-header>
+  </mat-card>
+  <mat-card>
+    <form [formGroup]="form" (ngSubmit)="sync()">
+      <mat-form-field appearance="standard" class="input">
+        <mat-label>Beamer users security group</mat-label>
+        <mat-select matInput id="userGroupId" formControlName="userGroupId">
+          <mat-option
+            *ngFor="let group of (groups$ | async)?.value"
+            [value]="group.id"
+          >
+            {{ group.displayName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="standard" class="input">
+        <mat-label>Beamer admins security group</mat-label>
+        <mat-select matInput id="adminGroupId" formControlName="adminGroupId">
+          <mat-option
+            *ngFor="let group of (groups$ | async)?.value"
+            [value]="group.id"
+          >
+            {{ group.displayName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="buttons">
+        <div *ngIf="!loading; then show; else loadSpinner"></div>
+        <ng-template #show>
+          <button mat-stroked-button color="primary" type="submit">
+            Synchronize security groups
+          </button>
+        </ng-template>
+        <ng-template #loadSpinner>
+          <mat-spinner></mat-spinner>
+        </ng-template>
+      </div>
+    </form>
+  </mat-card>
+</div>
