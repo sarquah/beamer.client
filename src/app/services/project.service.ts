@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { IProject } from '../models/interfaces/IProject';
 import { environment } from 'src/environments/environment';
+import { MsalService } from '@azure/msal-angular';
+import { AccountInfo } from '@azure/msal-browser';
 
 type ProjectFormControls = { [field in keyof IProject]?: FormControl };
 @Injectable({
@@ -12,41 +14,40 @@ type ProjectFormControls = { [field in keyof IProject]?: FormControl };
 export class ProjectService {
   private apiUrl = 'api/v1/project';
   private baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
-  private httpOptions;
+  private accountInfo: AccountInfo;
 
   constructor(
     private httpClient: HttpClient,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: MsalService
   ) {
-    this.httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
+    this.accountInfo = this.authService.instance.getAllAccounts().pop();
   }
 
   public getProjects(): Observable<IProject[]> {
+    const params: HttpParams = new HttpParams().set('tenantId', this.accountInfo.tenantId);
     const url = `${this.baseUrl}/projects`;
-    return this.httpClient.get<IProject[]>(url);
+    return this.httpClient.get<IProject[]>(url, { params });
   }
 
   public getProject(id: number): Observable<IProject> {
+    const params: HttpParams = new HttpParams().set('tenantId', this.accountInfo.tenantId);
     const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.get<IProject>(url);
+    return this.httpClient.get<IProject>(url, { params });
   }
 
   public updateProject(id: number, project: IProject): Observable<any> {
     const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.put<IProject>(url, project, this.httpOptions);
+    return this.httpClient.put<IProject>(url, this.addTenantIdToProject(project));
   }
 
   public deleteProject(id: number): Observable<any> {
     const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.delete<number>(url, this.httpOptions);
+    return this.httpClient.delete<number>(url);
   }
 
   public createProject(project: IProject): Observable<IProject> {
-    return this.httpClient.post<IProject>(this.baseUrl, project);
+    return this.httpClient.post<IProject>(this.baseUrl, this.addTenantIdToProject(project));
   }
 
   public createForm(): FormGroup {
@@ -59,5 +60,12 @@ export class ProjectService {
       status: new FormControl(null),
     };
     return this.formBuilder.group(formControls);
+  }
+
+  private addTenantIdToProject(project: IProject): IProject {
+    return {
+      ...project,
+      tenantId: this.accountInfo.tenantId
+    };
   }
 }

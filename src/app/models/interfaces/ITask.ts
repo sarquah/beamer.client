@@ -1,5 +1,4 @@
 import { EStatus } from '../enums/EStatus';
-import { IProject } from './IProject';
 
 export interface ITask {
   id?: number;
@@ -11,4 +10,5 @@ export interface ITask {
   startDate?: Date;
   endDate?: Date;
   projectId?: number;
+  tenantId?: string;
 }

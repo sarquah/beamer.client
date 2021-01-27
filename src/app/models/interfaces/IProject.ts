@@ -10,4 +10,5 @@ export interface IProject {
   startDate?: Date;
   endDate?: Date;
   tasks?: ITask[];
+  tenantId?: string;
 }

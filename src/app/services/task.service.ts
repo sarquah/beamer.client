@@ -1,6 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MsalService } from '@azure/msal-angular';
+import { AccountInfo } from '@azure/msal-browser';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ITask } from '../models/interfaces/ITask';
@@ -12,41 +14,40 @@ type TaskFormControls = { [field in keyof ITask]?: FormControl };
 export class TaskService {
   private apiUrl = 'api/v1/task';
   private baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
-  private httpOptions;
+  private accountInfo: AccountInfo;
 
   constructor(
     private httpClient: HttpClient,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: MsalService
   ) {
-    this.httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
+    this.accountInfo = this.authService.instance.getAllAccounts().pop();
   }
 
   public getTasks(): Observable<ITask[]> {
+    const params: HttpParams = new HttpParams().set('tenantId', this.accountInfo.tenantId);
     const url = `${this.baseUrl}/tasks`;
-    return this.httpClient.get<ITask[]>(url);
+    return this.httpClient.get<ITask[]>(url, { params });
   }
 
   public getTask(id: number): Observable<ITask> {
+    const params: HttpParams = new HttpParams().set('tenantId', this.accountInfo.tenantId);
     const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.get<ITask>(url);
+    return this.httpClient.get<ITask>(url, { params });
   }
 
-  public updateTask(id: number, project: ITask): Observable<any> {
+  public updateTask(id: number, task: ITask): Observable<any> {
     const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.put<ITask>(url, project, this.httpOptions);
+    return this.httpClient.put<ITask>(url, this.addTenantIdToTask(task));
   }
 
   public deleteTask(id: number): Observable<any> {
     const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.delete<number>(url, this.httpOptions);
+    return this.httpClient.delete<number>(url);
   }
 
   public createTask(task: ITask): Observable<ITask> {
-    return this.httpClient.post<ITask>(this.baseUrl, task);
+    return this.httpClient.post<ITask>(this.baseUrl, this.addTenantIdToTask(task));
   }
 
   public createForm(): FormGroup {
@@ -60,5 +61,12 @@ export class TaskService {
       projectId: new FormControl(null)
     };
     return this.formBuilder.group(formControls);
+  }
+
+  private addTenantIdToTask(task: ITask): ITask {
+    return {
+      ...task,
+      tenantId: this.accountInfo.tenantId
+    };
   }
 }
