@@ -1,7 +1,17 @@
 <div class="root">
   <h1>Beamer</h1>
   <p>This tool can be used to plan projects and tasks</p>
-  <a [title]="'Projects'" [routerLink]="'/projects'">Projects</a>
+  <div class="margin">
+    <button mat-stroked-button color="primary" [routerLink]="['/projects']">
+      Projects
+    </button>
+    <button mat-stroked-button color="primary" (click)="currentUser()">
+      Current user
+    </button>
+    <button mat-stroked-button color="primary" [routerLink]="['/admin']">
+      Admin
+    </button>
+  </div>
 </div>
 <div class="footer">
   Icons made by
