@@ -1,13 +1,9 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
-module.exports = function (config) {
+module.exports = (config) => {
   config.set({
     basePath: '',
-    files: [
-      'src/**/*.ts',
-      'test/**/*.ts'
-    ],
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
@@ -25,6 +21,13 @@ module.exports = function (config) {
       dir : 'coverage/'
     },
     reporters: ['progress', 'coverage'],
+    thresholds: {
+      statements: 80,
+      lines: 80,
+      branches: 80,
+      functions: 80
+    },
+    fixWebpackSourcePaths: true,
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
