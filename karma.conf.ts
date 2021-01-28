@@ -17,7 +17,7 @@ module.exports = (config) => {
     },
     // optionally, configure the reporter
     coverageReporter: {
-      type : 'html',
+      type : 'lcov',
       dir : 'coverage/'
     },
     reporters: ['progress', 'coverage'],
@@ -39,7 +39,7 @@ module.exports = (config) => {
       // source files, that you wanna generate coverage for
       // do not include tests or libraries
       // (these files will be instrumented by Istanbul)
-      'src/**/*.js': ['coverage']
+      'src/**/*.ts': ['coverage']
     },
   });
 };
