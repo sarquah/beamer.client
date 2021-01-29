@@ -7,16 +7,16 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "esnext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "esnext",
+    "target": "ESNext",
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
-      "esnext",
-      "dom"
+      "ESNext",
+      "DOM"
     ]
   },
   "angularCompilerOptions": {
