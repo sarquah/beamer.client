@@ -46,6 +46,7 @@
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "^2.0.3",
     "karma-jasmine": "~4.0.0",
+    "karma-spec-reporter": "0.0.32",
     "kind-of": ">=6.0.3",
     "lodash": "^4.17.20",
     "minimist": ">=1.2.3",

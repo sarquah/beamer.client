@@ -28,4 +28,4 @@ jobs:
     - run: npm run lint
     - run: npm ci
     - run: npm run build --if-present
-    - run: npm run-script test-coverage
+    - run: npm run-script test:coverage

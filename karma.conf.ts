@@ -9,9 +9,19 @@ module.exports = (config) => {
       require('karma-jasmine'),
       require('karma-coverage'),
       require('karma-chrome-launcher'),
+      require('karma-spec-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
-    reporters: ['progress', 'dots', 'coverage'],
+    reporters: ['spec', 'coverage'],
+    specReporter: {
+      maxLogLines: 5,             // limit number of lines logged per test
+      suppressErrorSummary: true, // do not print error summary
+      suppressFailed: false,      // do not print information about failed tests
+      suppressPassed: false,      // do not print information about passed tests
+      suppressSkipped: true,      // do not print information about skipped tests
+      showSpecTiming: false,      // print the time elapsed for each spec
+      failFast: true,             // test would finish with error when a first fail occurs
+    },
     fixWebpackSourcePaths: true,
     port: 9876,
     colors: true,
@@ -20,16 +30,21 @@ module.exports = (config) => {
     browsers: ['ChromeHeadless'],
     singleRun: false,
     restartOnFileChange: true,
-    preprocessors: {
-      // source files, that you wanna generate coverage for
-      // do not include tests or libraries
-      // (these files will be instrumented by Istanbul)
-      'src/**/*.ts': ['coverage']
-    },
-    // optionally, configure the reporter
     coverageReporter: {
-      type : 'lcov',
-      dir : 'coverage/'
+      reporters: [
+        { type: 'html', dir: 'coverage/' },
+        {
+          type: 'text',
+          check: {
+            global: {
+              statements: 50,
+              branches: 50,
+              functions: 50,
+              lines: 50
+            }
+          }
+        }
+      ]
     }
   });
 };
