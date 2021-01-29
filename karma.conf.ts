@@ -32,7 +32,7 @@ module.exports = (config) => {
     restartOnFileChange: true,
     coverageReporter: {
       reporters: [
-        { type: 'html', dir: 'coverage/' },
+        { type: 'lcov', dir: 'coverage/' },
         {
           type: 'text',
           check: {
