@@ -15,6 +15,7 @@ export class TaskService {
   private apiUrl = 'api/v1/task';
   private baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
   private accountInfo: AccountInfo;
+  private readonly params: HttpParams = new HttpParams();
 
   constructor(
     private httpClient: HttpClient,
@@ -27,15 +28,19 @@ export class TaskService {
   }
 
   public getTasks(): Observable<ITask[]> {
-    const params: HttpParams = new HttpParams().set('tenantId', this.accountInfo.tenantId);
+    if (this.accountInfo) {
+      this.params.set('tenantId', this.accountInfo.tenantId);
+    }
     const url = `${this.baseUrl}/tasks`;
-    return this.httpClient.get<ITask[]>(url, { params });
+    return this.httpClient.get<ITask[]>(url, { params: this.params });
   }
 
   public getTask(id: number): Observable<ITask> {
-    const params: HttpParams = new HttpParams().set('tenantId', this.accountInfo.tenantId);
+    if (this.accountInfo) {
+      this.params.set('tenantId', this.accountInfo.tenantId);
+    }
     const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.get<ITask>(url, { params });
+    return this.httpClient.get<ITask>(url, { params: this.params });
   }
 
   public updateTask(id: number, task: ITask): Observable<any> {
@@ -66,9 +71,9 @@ export class TaskService {
   }
 
   private addTenantIdToTask(task: ITask): ITask {
-    return {
+    return this.accountInfo ? {
       ...task,
       tenantId: this.accountInfo.tenantId
-    };
+    } : task;
   }
 }
