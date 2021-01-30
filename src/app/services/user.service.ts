@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { IUser } from '../models/interfaces/IUser';
 
 @Injectable({
@@ -18,7 +18,9 @@ export class UserService {
     private httpClient: HttpClient,
     private authService: MsalService
   ) {
-    this.accountInfo = this.authService.instance.getAllAccounts().pop();
+    if (this.authService.instance.getAllAccounts().length > 0) {
+      this.accountInfo = this.authService.instance.getAllAccounts()[0];
+    }
   }
 
   public getUsers(): Observable<IUser[]> {

@@ -6,7 +6,7 @@ import { AdminService } from './admin.service';
 
 describe('AdminService', () => {
   let sut: AdminService;
-  let formBuilder: FormBuilder = new FormBuilder();
+  let formBuilderMock: FormBuilder;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,7 +20,7 @@ describe('AdminService', () => {
       ]
     });
     sut = TestBed.inject(AdminService);
-    formBuilder = TestBed.inject(FormBuilder);
+    formBuilderMock = TestBed.inject(FormBuilder);
   });
 
   it('should be created', () => {
@@ -36,7 +36,7 @@ describe('AdminService', () => {
   });
 
   it('#createForm should return a form', () => {
-    const formGroup = new FormGroup({
+    const formGroup = formBuilderMock.group({
       userGroupId: new FormControl('', Validators.required),
       adminGroupId: new FormControl('', Validators.required)
     });

@@ -24,7 +24,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.subscriptions = [];
-    this.id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.id = parseInt(id, 10);
+    }
     this.project$ = this.projectService.getProject(this.id);
   }
 

@@ -34,7 +34,10 @@ export class AdminComponent implements OnInit {
   public sync() {
     if (this.form.valid) {
       this.loading = true;
-      const account = this.authService.instance.getAllAccounts().pop();
+      let account;
+      if (this.authService.instance.getAllAccounts().length > 0) {
+        account = this.authService.instance.getAllAccounts().pop();
+      }
       this.adminService.getGroupMembers(this.form.value.userGroupId).pipe(
         switchMap(groupMembers => {
           const users: IUser[] = groupMembers.value.map(member => {
