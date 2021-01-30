@@ -7,11 +7,14 @@ export class EnumPipe implements PipeTransform {
   transform(value: string): string {
     if (value) {
       const resultArray = value.match(/[A-Z][a-z]+/g);
-      return resultArray.reduce((total, tmpString) => {
-        return total
-          ? `${total} ${tmpString.toLocaleLowerCase()}`
-          : `${tmpString}`;
-      });
+      if (resultArray) {
+        return resultArray.reduce((total, tmpString) => {
+          return total
+            ? `${total} ${tmpString.toLocaleLowerCase()}`
+            : `${tmpString}`;
+        });
+      }
     }
+    return value;
   }
 }

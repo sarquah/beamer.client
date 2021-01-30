@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { ITask } from '../models/interfaces/ITask';
 
 type TaskFormControls = { [field in keyof ITask]?: FormControl };
@@ -21,7 +21,9 @@ export class TaskService {
     private formBuilder: FormBuilder,
     private authService: MsalService
   ) {
-    this.accountInfo = this.authService.instance.getAllAccounts().pop();
+    if (this.authService.instance.getAllAccounts().length > 0) {
+      this.accountInfo = this.authService.instance.getAllAccounts()[0];
+    }
   }
 
   public getTasks(): Observable<ITask[]> {

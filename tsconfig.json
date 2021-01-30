@@ -17,7 +17,8 @@
     "lib": [
       "ESNext",
       "DOM"
-    ]
+    ],
+    "strictNullChecks": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

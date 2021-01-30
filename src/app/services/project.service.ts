@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { IProject } from '../models/interfaces/IProject';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
 
@@ -15,25 +15,32 @@ export class ProjectService {
   private apiUrl = 'api/v1/project';
   private baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
   private accountInfo: AccountInfo;
+  private readonly params: HttpParams = new HttpParams();
 
   constructor(
     private httpClient: HttpClient,
     private formBuilder: FormBuilder,
     private authService: MsalService
   ) {
-    this.accountInfo = this.authService.instance.getAllAccounts().pop();
+    if (this.authService.instance.getAllAccounts().length > 0) {
+      this.accountInfo = this.authService.instance.getAllAccounts()[0];
+    }
   }
 
   public getProjects(): Observable<IProject[]> {
-    const params: HttpParams = new HttpParams().set('tenantId', this.accountInfo.tenantId);
+    if (this.accountInfo) {
+      this.params.set('tenantId', this.accountInfo.tenantId);
+    }
     const url = `${this.baseUrl}/projects`;
-    return this.httpClient.get<IProject[]>(url, { params });
+    return this.httpClient.get<IProject[]>(url, { params: this.params });
   }
 
   public getProject(id: number): Observable<IProject> {
-    const params: HttpParams = new HttpParams().set('tenantId', this.accountInfo.tenantId);
+    if (this.accountInfo) {
+      this.params.set('tenantId', this.accountInfo.tenantId);
+    }
     const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.get<IProject>(url, { params });
+    return this.httpClient.get<IProject>(url, { params: this.params });
   }
 
   public updateProject(id: number, project: IProject): Observable<any> {
@@ -63,9 +70,9 @@ export class ProjectService {
   }
 
   private addTenantIdToProject(project: IProject): IProject {
-    return {
+    return this.accountInfo ? {
       ...project,
       tenantId: this.accountInfo.tenantId
-    };
+    } : project;
   }
 }

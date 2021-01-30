@@ -6,7 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CdkTableModule } from '@angular/cdk/table';
 import { EnumPipe } from './pipes/enum.pipe';
 import { EnumToArrayPipe } from './pipes/enum-to-array.pipe';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';

@@ -43,8 +43,8 @@ export class TasksComponent implements OnInit, OnDestroy {
     });
   }
 
-  public delete(task: ITask) {
-    this.taskService.deleteTask(task.id).subscribe(() => {
+  public delete(id: number) {
+    this.taskService.deleteTask(id).subscribe(() => {
       this.ngOnInit();
     });
   }

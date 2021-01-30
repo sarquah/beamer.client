@@ -15,14 +15,13 @@ module.exports = (config) => {
     reporters: ['spec', 'coverage'],
     specReporter: {
       maxLogLines: 5,             // limit number of lines logged per test
-      suppressErrorSummary: true, // do not print error summary
+      suppressErrorSummary: false, // do not print error summary
       suppressFailed: false,      // do not print information about failed tests
       suppressPassed: false,      // do not print information about passed tests
-      suppressSkipped: true,      // do not print information about skipped tests
+      suppressSkipped: false,      // do not print information about skipped tests
       showSpecTiming: false,      // print the time elapsed for each spec
-      failFast: true,             // test would finish with error when a first fail occurs
+      failFast: false,             // test would finish with error when a first fail occurs
     },
-    fixWebpackSourcePaths: true,
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -34,7 +33,7 @@ module.exports = (config) => {
       reporters: [
         { type: 'lcov', dir: 'coverage/' },
         {
-          type: 'text',
+          type: 'text-summary',
           check: {
             global: {
               statements: 50,
