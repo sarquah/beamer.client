@@ -2,8 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { ProjectService } from './project.service';
-import { IProject } from '../models/interfaces/IProject';
 import { EStatus } from '../models/enums/EStatus';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MSALInstanceFactory } from '../app.module';

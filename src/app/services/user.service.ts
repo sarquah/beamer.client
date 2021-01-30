@@ -13,6 +13,7 @@ export class UserService {
   private apiUrl = 'api/v1/user';
   private baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
   private accountInfo: AccountInfo;
+  private readonly params: HttpParams = new HttpParams();
 
   constructor(
     private httpClient: HttpClient,
@@ -24,9 +25,11 @@ export class UserService {
   }
 
   public getUsers(): Observable<IUser[]> {
-    const params: HttpParams = new HttpParams().set('tenantId', this.accountInfo.tenantId);
+    if (this.accountInfo) {
+      this.params.set('tenantId', this.accountInfo.tenantId);
+    }
     const url = `${this.baseUrl}/users`;
-    return this.httpClient.get<IUser[]>(url, { params });
+    return this.httpClient.get<IUser[]>(url, { params: this.params });
   }
 
   public createUsers(users: IUser[]): Observable<IUser[]> {
@@ -36,9 +39,9 @@ export class UserService {
   }
 
   private addTenantIdToUser(user: IUser): IUser {
-    return {
+    return this.accountInfo ? {
       ...user,
       tenantId: this.accountInfo.tenantId
-    };
+    } : user;
   }
 }
