@@ -7,11 +7,13 @@ import { IProject } from '../models/interfaces/IProject';
 import { EStatus } from '../models/enums/EStatus';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MSALInstanceFactory } from '../app.module';
+import { TaskService } from './task.service';
+import { ITask } from '../models/interfaces/ITask';
 
-describe('ProjectService', () => {
-  let sut: ProjectService;
+describe('TaskService', () => {
+  let sut: TaskService;
   let formBuilderMock: FormBuilder = new FormBuilder();
-  let mockProjects: IProject[];
+  let mockTasks: ITask[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,7 +22,7 @@ describe('ProjectService', () => {
         ReactiveFormsModule
       ],
       providers: [
-        ProjectService,
+        TaskService,
         FormBuilder,
         MsalService,
         {
@@ -30,30 +32,18 @@ describe('ProjectService', () => {
       ]
     });
     formBuilderMock = TestBed.inject(FormBuilder);
-    sut = TestBed.inject(ProjectService);
+    sut = TestBed.inject(TaskService);
 
-    mockProjects = [
+    mockTasks = [
       {
         id: 0,
         tenantId: 'tenantId',
         status: EStatus.NotStarted,
-        description: 'Project created for unit test',
+        description: 'Task created for unit test',
         ownerId: 0,
-        name: 'Unit test',
+        name: 'Create unit test',
         startDate: new Date(),
-        endDate: new Date(),
-        tasks: [
-          {
-            id: 0,
-            tenantId: 'tenantId',
-            status: EStatus.NotStarted,
-            description: 'Task created for unit test',
-            ownerId: 0,
-            name: 'Create unit test',
-            startDate: new Date(),
-            endDate: new Date(),
-          }
-        ]
+        endDate: new Date()
       }
     ];
   });
@@ -62,24 +52,24 @@ describe('ProjectService', () => {
     expect(sut).toBeTruthy();
   });
 
-  it('#getProjects should return a value', () => {
-    sut.getProjects().subscribe(data => expect(data).toEqual(mockProjects));
+  it('#getTasks should return a value', () => {
+    sut.getTasks().subscribe(data => expect(data).toEqual(mockTasks));
   });
 
-  it('#getProject should return a value', () => {
-    sut.getProject(0).subscribe(data => expect(data).toEqual(mockProjects[0]));
+  it('#getTask should return a value', () => {
+    sut.getTask(0).subscribe(data => expect(data).toEqual(mockTasks[0]));
   });
 
-  it('#updateProject should return a value', () => {
-    sut.updateProject(0, mockProjects[0]).subscribe(data => expect(data).toEqual(mockProjects[0]));
+  it('#updateTask should return a value', () => {
+    sut.updateTask(0, mockTasks[0]).subscribe(data => expect(data).toEqual(mockTasks[0]));
   });
 
-  it('#deleteProject should return a value', () => {
-    sut.deleteProject(0).subscribe(data => expect(data).toEqual(mockProjects[0]));
+  it('#deleteTask should return a value', () => {
+    sut.deleteTask(0).subscribe(data => expect(data).toEqual(mockTasks[0]));
   });
 
-  it('#createProject should return a value', () => {
-    sut.createProject(mockProjects[0]).subscribe(data => expect(data).toEqual(mockProjects[0]));
+  it('#createTask should return a value', () => {
+    sut.createTask(mockTasks[0]).subscribe(data => expect(data).toEqual(mockTasks[0]));
   });
 
   it('#createForm should return a form', () => {
@@ -89,7 +79,8 @@ describe('ProjectService', () => {
       ownerId: new FormControl(null),
       startDate: new FormControl(null),
       endDate: new FormControl(null),
-      status: new FormControl(null)
+      status: new FormControl(null),
+      projectId: new FormControl(null)
     });
     expect(sut.createForm().value).toEqual(formGroup.value);
   });
