@@ -6,6 +6,7 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MSALInstanceFactory } from '../app.module';
 import { UserService } from './user.service';
 import { IUser } from '../models/interfaces/IUser';
+import { MockAuthService } from './mockauth.service';
 
 describe('UserService', () => {
   let sut: UserService;
@@ -19,10 +20,9 @@ describe('UserService', () => {
       ],
       providers: [
         UserService,
-        MsalService,
         {
-          provide: MSAL_INSTANCE,
-          useFactory: MSALInstanceFactory
+          provide: MsalService,
+          useClass: MockAuthService
         }
       ]
     });

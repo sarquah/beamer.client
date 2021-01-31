@@ -5,8 +5,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProjectService } from './project.service';
 import { IProject } from '../models/interfaces/IProject';
 import { EStatus } from '../models/enums/EStatus';
-import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
-import { MSALInstanceFactory } from '../app.module';
+import { MsalService } from '@azure/msal-angular';
+import { MockAuthService } from './mockauth.service';
 
 describe('ProjectService', () => {
   let sut: ProjectService;
@@ -22,10 +22,9 @@ describe('ProjectService', () => {
       providers: [
         ProjectService,
         FormBuilder,
-        MsalService,
         {
-          provide: MSAL_INSTANCE,
-          useFactory: MSALInstanceFactory
+          provide: MsalService,
+          useClass: MockAuthService
         }
       ]
     });

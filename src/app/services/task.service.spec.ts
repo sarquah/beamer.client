@@ -7,6 +7,7 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MSALInstanceFactory } from '../app.module';
 import { TaskService } from './task.service';
 import { ITask } from '../models/interfaces/ITask';
+import { MockAuthService } from './mockauth.service';
 
 describe('TaskService', () => {
   let sut: TaskService;
@@ -22,10 +23,9 @@ describe('TaskService', () => {
       providers: [
         TaskService,
         FormBuilder,
-        MsalService,
         {
-          provide: MSAL_INSTANCE,
-          useFactory: MSALInstanceFactory
+          provide: MsalService,
+          useClass: MockAuthService
         }
       ]
     });
