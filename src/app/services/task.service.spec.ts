@@ -3,11 +3,10 @@ import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { EStatus } from '../models/enums/EStatus';
-import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
-import { MSALInstanceFactory } from '../app.module';
+import { MsalService } from '@azure/msal-angular';
 import { TaskService } from './task.service';
 import { ITask } from '../models/interfaces/ITask';
-import { MockAuthService } from './mockauth.service';
+import { MockAuthService } from './mockauth.service.spec';
 
 describe('TaskService', () => {
   let sut: TaskService;

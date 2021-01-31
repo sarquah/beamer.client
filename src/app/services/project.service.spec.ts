@@ -6,7 +6,7 @@ import { ProjectService } from './project.service';
 import { IProject } from '../models/interfaces/IProject';
 import { EStatus } from '../models/enums/EStatus';
 import { MsalService } from '@azure/msal-angular';
-import { MockAuthService } from './mockauth.service';
+import { MockAuthService } from './mockauth.service.spec';
 
 describe('ProjectService', () => {
   let sut: ProjectService;

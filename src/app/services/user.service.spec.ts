@@ -2,11 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
-import { MSALInstanceFactory } from '../app.module';
+import { MsalService } from '@azure/msal-angular';
 import { UserService } from './user.service';
 import { IUser } from '../models/interfaces/IUser';
-import { MockAuthService } from './mockauth.service';
+import { MockAuthService } from './mockauth.service.spec';
 
 describe('UserService', () => {
   let sut: UserService;
