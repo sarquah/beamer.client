@@ -76,6 +76,7 @@ describe('AdminComponent', () => {
         sut = TestBed.inject(AdminComponent);
         formBuilderMock = TestBed.inject(FormBuilder);
         adminServiceMock = createAdminServiceMock(adminServiceMock, formBuilderMock, users);
+        sut.ngOnInit();
     });
 
     afterAll(() => {
@@ -88,17 +89,14 @@ describe('AdminComponent', () => {
 
     describe('#ngOnInit should set properties', () => {
         it('loading should be false', () => {
-            sut.ngOnInit();
             expect(sut.loading).toBeFalse();
         });
 
         it('success should be empty', () => {
-            sut.ngOnInit();
             expect(sut.success).toEqual('');
         });
 
         it('form should return a value', () => {
-            sut.ngOnInit();
             const formGroup = formBuilderMock.group({
                 userGroupId: new FormControl('', Validators.required),
                 adminGroupId: new FormControl('', Validators.required)
@@ -107,18 +105,15 @@ describe('AdminComponent', () => {
         });
 
         it('groups$ should be an observable with value', () => {
-            sut.ngOnInit();
             sut.groups$.subscribe(data => expect(data).toEqual('getGroups'));
         });
 
-        it('form is not valid', () => {
-            sut.ngOnInit();
+        it('form is invalid', () => {
             sut.form.setErrors({ status: 'invalid' });
             expect(sut.form.invalid).toBeTrue();
         });
 
         it('form is valid', () => {
-            sut.ngOnInit();
             const formGroup = formBuilderMock.group({
                 userGroupId: new FormControl('userGroupId', Validators.required),
                 adminGroupId: new FormControl('adminGroupId', Validators.required)
@@ -128,8 +123,8 @@ describe('AdminComponent', () => {
         });
     });
 
-    describe('#sync side effects', () => {
-        it('should be called', () => {
+    describe('#sync', () => {
+        it('call with valid form', () => {
             const formGroup = formBuilderMock.group({
                 userGroupId: new FormControl('userGroupId', Validators.required),
                 adminGroupId: new FormControl('adminGroupId', Validators.required)
@@ -157,6 +152,12 @@ describe('AdminComponent', () => {
             sut.sync();
             expect(sut.loading).toBeFalse();
             expect(sut.success).toEqual('Groups have been synchronized');
+        });
+
+        it('call with invalid form', () => {
+            sut.form.setErrors({ error: true });
+            sut.sync();
+            expect(sut.form.invalid).toBeTrue();
         });
     });
 });
