@@ -13,60 +13,43 @@ describe('AdminComponent', () => {
     let sut: AdminComponent;
     let formBuilderMock: FormBuilder;
     let adminServiceMock = jasmine.createSpyObj<AdminService>('AdminService', [
-        'getGroupMembers',
         'getGroups',
-        'createForm'
+        'createForm',
+        'syncGroup'
     ]);
-    let userServiceMock = jasmine.createSpyObj<UserService>('UserService', ['createUsers']);
     const users: IUser[] = [{
         id: 0,
         name: 'name',
         department: 'department',
-        role: 'rolee',
+        role: 'role',
         tenantId: 'tenantId',
         email: 'email'
     }];
 
     const createAdminServiceMock = (adminService: jasmine.SpyObj<AdminService>, formBuilder: FormBuilder, usersMock: IUser[]):
         jasmine.SpyObj<AdminService> => {
-        const groupMembers = {
-            value: usersMock
-        };
-
-        const getGroupMembersReturn: Observable<any> = new Observable((observer) => {
-            observer.next(groupMembers);
-            observer.complete();
-        });
-        adminService.getGroupMembers.and.returnValue(getGroupMembersReturn);
-
+        // Create getGroups return value
         const getGroupsReturn: Observable<any> = new Observable((observer) => {
             observer.next('getGroups');
             observer.complete();
         });
         adminService.getGroups.and.returnValue(getGroupsReturn);
 
+        // Create createForm return value
         const createFormReturn = formBuilder.group({
             userGroupId: new FormControl('', Validators.required),
             adminGroupId: new FormControl('', Validators.required)
         });
         adminService.createForm.and.returnValue(createFormReturn);
-        return adminService;
-    }
 
-    const createUserServiceThrowErrorMock = (userService: jasmine.SpyObj<UserService>):
-        jasmine.SpyObj<UserService> => {
-            userService.createUsers.and.throwError('Introduced error in unit test');
-        return userService
-    }
-
-    const createUserServiceMock = (userService: jasmine.SpyObj<UserService>, usersMock: IUser[]):
-        jasmine.SpyObj<UserService> => {
-        const users$: Observable<IUser[]> = new Observable((observer) => {
+        // Create syncGroup return value
+        const syncGroupReturn: Observable<any> = new Observable((observer) => {
             observer.next(usersMock);
             observer.complete();
         });
-        userService.createUsers.and.returnValue(users$);
-        return userService
+        adminService.syncGroup.and.returnValue(syncGroupReturn);
+
+        return adminService;
     }
 
     beforeEach(() => {
@@ -78,17 +61,15 @@ describe('AdminComponent', () => {
             providers: [
                 AdminComponent,
                 FormBuilder,
-                {
-                    provide: AdminService,
-                    useValue: adminServiceMock
-                },
+                AdminService,
+                UserService,
                 {
                     provide: MsalService,
                     useClass: MockAuthService
                 },
                 {
-                    provide: UserService,
-                    useValue: userServiceMock
+                    provide: AdminService,
+                    useValue: adminServiceMock
                 }
             ]
         });
@@ -149,7 +130,6 @@ describe('AdminComponent', () => {
 
     describe('#sync side effects', () => {
         it('should be called', () => {
-            userServiceMock = createUserServiceMock(userServiceMock, users);
             const formGroup = formBuilderMock.group({
                 userGroupId: new FormControl('userGroupId', Validators.required),
                 adminGroupId: new FormControl('adminGroupId', Validators.required)
@@ -159,43 +139,24 @@ describe('AdminComponent', () => {
             sut.sync();
         });
 
-        it('userService should return error', () => {
-            userServiceMock = createUserServiceThrowErrorMock(userServiceMock);
+        it('adminService should return data', () => {
             const formGroup = formBuilderMock.group({
                 userGroupId: new FormControl('userGroupId', Validators.required),
                 adminGroupId: new FormControl('adminGroupId', Validators.required)
             });
             sut.form = formGroup;
-            expect(() => userServiceMock.createUsers([{
+            const groupMembers: IUser[] = [{
                 id: 0,
                 name: 'name',
                 department: 'department',
-                role: 'rolee',
+                role: 'role',
                 tenantId: 'tenantId',
                 email: 'email'
-            }])).toThrowError('Introduced error in unit test');
-            sut.sync()
-        });
-
-        it('adminService should return data', () => {
-            userServiceMock = createUserServiceMock(userServiceMock, users);
-            const formGroup = formBuilderMock.group({
-                userGroupId: new FormControl('userGroupId', Validators.required),
-                adminGroupId: new FormControl('adminGroupId', Validators.required)
-            });
-            sut.form = formGroup;
-            const groupMembers = {
-                value: [{
-                    id: 0,
-                    name: 'name',
-                    department: 'department',
-                    role: 'rolee',
-                    tenantId: 'tenantId',
-                    email: 'email'
-                }]
-            };
-            adminServiceMock.getGroupMembers('groupMember').subscribe(x => expect(x).toEqual(groupMembers));
+            }];
+            adminServiceMock.syncGroup('groupId', 'tenantId').subscribe(usersMock => expect(usersMock).toEqual(groupMembers));
             sut.sync();
+            expect(sut.loading).toBeFalse();
+            expect(sut.success).toEqual('Groups have been synchronized');
         });
     });
 });
