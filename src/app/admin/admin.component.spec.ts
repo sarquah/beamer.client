@@ -54,7 +54,6 @@ describe('AdminComponent', () => {
         });
         sut = TestBed.inject(AdminComponent);
         formBuilderMock = TestBed.inject(FormBuilder);
-
         adminServiceMock = createAdminServiceMock(adminServiceMock, formBuilderMock);
     });
 
@@ -107,7 +106,6 @@ describe('AdminComponent', () => {
     describe('#sync side effects', () => {
         it('should be called', () => {
             userServiceMock = createUserServiceMock(userServiceMock);
-            sut.ngOnInit();
             const formGroup = formBuilderMock.group({
                 userGroupId: new FormControl('userGroupId', Validators.required),
                 adminGroupId: new FormControl('adminGroupId', Validators.required)
@@ -117,7 +115,7 @@ describe('AdminComponent', () => {
             sut.sync();
         });
 
-        it('adminService should return error', () => {
+        it('userService should return error', () => {
             userServiceMock = createUserServiceThrowErrorMock(userServiceMock);
             const formGroup = formBuilderMock.group({
                 userGroupId: new FormControl('userGroupId', Validators.required),
