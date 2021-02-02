@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { IProject } from '../models/interfaces/IProject';
 import { environment } from '../../environments/environment';
@@ -12,10 +12,10 @@ type ProjectFormControls = { [field in keyof IProject]?: FormControl };
   providedIn: 'root',
 })
 export class ProjectService {
-  private apiUrl = 'api/v1/project';
-  private baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
-  private accountInfo: AccountInfo;
-  private readonly params: HttpParams = new HttpParams();
+  private readonly apiUrl = 'api/v1/project';
+  private readonly baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
+  private readonly accountInfo: AccountInfo;
+  private readonly params: HttpParams;
 
   constructor(
     private httpClient: HttpClient,
@@ -24,23 +24,26 @@ export class ProjectService {
   ) {
     if (this.authService.instance.getAllAccounts().length > 0) {
       this.accountInfo = this.authService.instance.getAllAccounts()[0];
+      this.params = new HttpParams().set('tenantId', this.accountInfo.tenantId);
     }
   }
 
   public getProjects(): Observable<IProject[]> {
     if (this.accountInfo) {
-      this.params.set('tenantId', this.accountInfo.tenantId);
+      const url = `${this.baseUrl}/projects`;
+      return this.httpClient.get<IProject[]>(url, { params: this.params });
+    } else {
+      return throwError('Not logged in')
     }
-    const url = `${this.baseUrl}/projects`;
-    return this.httpClient.get<IProject[]>(url, { params: this.params });
   }
 
   public getProject(id: number): Observable<IProject> {
     if (this.accountInfo) {
-      this.params.set('tenantId', this.accountInfo.tenantId);
+      const url = `${this.baseUrl}/${id}`;
+      return this.httpClient.get<IProject>(url, { params: this.params });
+    } else {
+      return throwError('Not logged in')
     }
-    const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.get<IProject>(url, { params: this.params });
   }
 
   public updateProject(id: number, project: IProject): Observable<any> {
