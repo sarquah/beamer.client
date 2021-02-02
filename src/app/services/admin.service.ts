@@ -34,7 +34,7 @@ export class AdminService {
     return this.formBuilder.group(formControls);
   }
 
-  public syncGroup(userGroupId: string, tenantId: string): Observable<IUser[]> {
+  public syncGroup(userGroupId: string, tenantId: string): Observable<any> {
     return this.getGroupMembers(userGroupId).pipe(
       switchMap(groupMembers => {
         const users: IUser[] = groupMembers.value.map(member => {
@@ -44,7 +44,7 @@ export class AdminService {
             role: member.jobTitle,
             tenantId,
             email: member.mail
-          }
+          };
         });
         return this.userService.createUsers(users)
       }),
