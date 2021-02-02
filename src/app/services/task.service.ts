@@ -1,9 +1,9 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ITask } from '../models/interfaces/ITask';
 
@@ -12,10 +12,10 @@ type TaskFormControls = { [field in keyof ITask]?: FormControl };
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = 'api/v1/task';
-  private baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
-  private accountInfo: AccountInfo;
-  private readonly params: HttpParams = new HttpParams();
+  private readonly apiUrl = 'api/v1/task';
+  private readonly baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
+  private readonly accountInfo: AccountInfo;
+  private readonly params: HttpParams;
 
   constructor(
     private httpClient: HttpClient,
@@ -24,23 +24,26 @@ export class TaskService {
   ) {
     if (this.authService.instance.getAllAccounts().length > 0) {
       this.accountInfo = this.authService.instance.getAllAccounts()[0];
+      this.params = new HttpParams().set('tenantId', this.accountInfo.tenantId);
     }
   }
 
   public getTasks(): Observable<ITask[]> {
     if (this.accountInfo) {
-      this.params.set('tenantId', this.accountInfo.tenantId);
+      const url = `${this.baseUrl}/tasks`;
+      return this.httpClient.get<ITask[]>(url, { params: this.params });
+    } else {
+      return throwError('Not logged in')
     }
-    const url = `${this.baseUrl}/tasks`;
-    return this.httpClient.get<ITask[]>(url, { params: this.params });
   }
 
   public getTask(id: number): Observable<ITask> {
     if (this.accountInfo) {
-      this.params.set('tenantId', this.accountInfo.tenantId);
+      const url = `${this.baseUrl}/${id}`;
+      return this.httpClient.get<ITask>(url, { params: this.params });
+    } else {
+      return throwError('Not logged in')
     }
-    const url = `${this.baseUrl}/${id}`;
-    return this.httpClient.get<ITask>(url, { params: this.params });
   }
 
   public updateTask(id: number, task: ITask): Observable<any> {

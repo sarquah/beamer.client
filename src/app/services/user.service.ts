@@ -1,8 +1,8 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IUser } from '../models/interfaces/IUser';
 
@@ -10,10 +10,10 @@ import { IUser } from '../models/interfaces/IUser';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'api/v1/user';
-  private baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
-  private accountInfo: AccountInfo;
-  private readonly params: HttpParams = new HttpParams();
+  private readonly apiUrl = 'api/v1/user';
+  private readonly baseUrl = `${environment.beamerAPIEndpoint}/${this.apiUrl}`;
+  private readonly accountInfo: AccountInfo;
+  private readonly params: HttpParams;
 
   constructor(
     private httpClient: HttpClient,
@@ -21,15 +21,17 @@ export class UserService {
   ) {
     if (this.authService.instance.getAllAccounts().length > 0) {
       this.accountInfo = this.authService.instance.getAllAccounts()[0];
+      this.params = new HttpParams().set('tenantId', this.accountInfo.tenantId);
     }
   }
 
   public getUsers(): Observable<IUser[]> {
     if (this.accountInfo) {
-      this.params.set('tenantId', this.accountInfo.tenantId);
+      const url = `${this.baseUrl}/users`;
+      return this.httpClient.get<IUser[]>(url, { params: this.params });
+    } else {
+      return throwError('Not logged in')
     }
-    const url = `${this.baseUrl}/users`;
-    return this.httpClient.get<IUser[]>(url, { params: this.params });
   }
 
   public createUsers(users: IUser[]): Observable<IUser[]> {
