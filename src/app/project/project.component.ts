@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EStatus } from '../models/enums/EStatus';
 import { IProject } from '../models/interfaces/IProject';
 
@@ -7,13 +7,9 @@ import { IProject } from '../models/interfaces/IProject';
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss']
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent {
   @Input() project: IProject;
   public EStatus = EStatus;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }
