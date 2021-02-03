@@ -1,4 +1,4 @@
-import { Location } from '@angular/common'
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';

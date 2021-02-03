@@ -11,7 +11,7 @@ import { MockAuthService } from '../services/mockauth.service.spec';
 import { ProjectService } from '../services/project.service';
 import { UserService } from '../services/user.service';
 import { ProjectEditComponent } from './project-edit.component';
-import { Location } from '@angular/common'
+import { Location } from '@angular/common';
 
 describe('ProjectEditComponent', () => {
     let sut: ProjectEditComponent;
