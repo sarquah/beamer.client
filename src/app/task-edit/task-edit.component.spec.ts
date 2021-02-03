@@ -1,29 +1,43 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ProjectService } from '../services/project.service';
 import { TaskService } from '../services/task.service';
 import { UserService } from '../services/user.service';
-import { TaskCreateComponent } from './task-create.component';
+import { TaskEditComponent } from './task-edit.component';
 import { Location } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { EnumToArrayPipe } from '../pipes/enum-to-array.pipe';
+import { EnumPipe } from '../pipes/enum.pipe';
+import { ActivatedRoute } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { MockAuthService } from '../services/mockauth.service.spec';
-import { ITask } from '../models/interfaces/ITask';
-import { EStatus } from '../models/enums/EStatus';
 import { Observable } from 'rxjs';
+import { EStatus } from '../models/enums/EStatus';
+import { ITask } from '../models/interfaces/ITask';
 
-describe('TaskCreateComponent', () => {
-    let sut: TaskCreateComponent;
-    let locationMock: jasmine.SpyObj<Location>;
-    let taskServiceMock: jasmine.SpyObj<TaskService>;
+describe('TaskEditComponent', () => {
+    let sut: TaskEditComponent;
     let formBuilderMock: FormBuilder;
+    let taskServiceMock: jasmine.SpyObj<TaskService>;
+    let locationMock: jasmine.SpyObj<Location>;
 
     beforeEach(() => {
-        locationMock = jasmine.createSpyObj<Location>('Location', ['back']);
+        const activatedRouteMock = {
+            snapshot: {
+                paramMap: {
+                    get: () => {
+                        return 0;
+                    }
+                }
+            }
+        };
+
         taskServiceMock = jasmine.createSpyObj<TaskService>('TaskService', [
-            'createTask',
-            'createForm'
+            'updateTask',
+            'createForm',
+            'getTask'
         ]);
+        locationMock = jasmine.createSpyObj<Location>('Location', ['back']);
 
         TestBed.configureTestingModule({
             imports: [
@@ -31,25 +45,32 @@ describe('TaskCreateComponent', () => {
                 ReactiveFormsModule
             ],
             providers: [
-                TaskCreateComponent,
+                TaskEditComponent,
                 UserService,
                 ProjectService,
+                EnumPipe,
+                EnumToArrayPipe,
                 FormBuilder,
+                {
+                    provide: ActivatedRoute,
+                    useValue: activatedRouteMock
+                },
                 {
                     provide: MsalService,
                     useClass: MockAuthService
                 },
                 {
-                    provide: Location,
-                    useValue: locationMock
-                },
-                {
                     provide: TaskService,
                     useValue: taskServiceMock
+                },
+                {
+                    provide: Location,
+                    useValue: locationMock
                 }
             ]
         });
-        sut = TestBed.inject(TaskCreateComponent);
+        sut = TestBed.inject(TaskEditComponent);
+
         formBuilderMock = TestBed.inject(FormBuilder);
 
         const mockTask: ITask = {
@@ -69,7 +90,8 @@ describe('TaskCreateComponent', () => {
             observer.next(mockTask);
             observer.complete();
         });
-        taskServiceMock.createTask.and.returnValue(task$);
+        taskServiceMock.updateTask.and.returnValue(task$);
+        taskServiceMock.getTask.and.returnValue(task$);
 
         const form = formBuilderMock.group({
             name: new FormControl(null),
@@ -86,27 +108,32 @@ describe('TaskCreateComponent', () => {
 
     afterAll(() => {
         sut.ngOnDestroy();
-    })
+    });
 
     it('should be created', () => {
         expect(sut).toBeTruthy();
     });
 
-    describe('#createTask', () => {
+    describe('#updateTask', () => {
         it('call with valid form', () => {
-            sut.createTask();
-            expect(sut.form.valid).toBeTrue();
+            sut.updateTask();
+            expect(sut.form.valid).toBeTrue()
         });
 
         it('call with invalid form', () => {
             sut.form.setErrors({ error: true });
-            sut.createTask();
-            expect(sut.form.invalid).toBeTrue();
+            sut.updateTask();
+            expect(sut.form.invalid).toBeTrue()
         });
 
-        it('should be called once', () => {
-            sut.createTask();
-            expect(taskServiceMock.createTask).toHaveBeenCalled();
+        it('should be called', () => {
+            sut.updateTask();
+            expect(taskServiceMock.updateTask).toHaveBeenCalled();
         });
+    });
+
+    it('#goBack should be called', () => {
+        sut.goBack();
+        expect(locationMock.back).toHaveBeenCalled();
     });
 });
