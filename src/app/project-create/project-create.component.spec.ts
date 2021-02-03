@@ -103,7 +103,6 @@ describe('ProjectCreateComponent', () => {
         it('call with valid form', () => {
             sut.createProject();
             expect(sut.form.valid).toBeTrue();
-            expect(projectServiceMock.createProject).toHaveBeenCalled();
         });
 
         it('call with invalid form', () => {

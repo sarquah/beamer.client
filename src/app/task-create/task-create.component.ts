@@ -1,7 +1,6 @@
 import { Location } from '@angular/common'
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { EStatus } from '../models/enums/EStatus';
 import { IProject } from '../models/interfaces/IProject';
@@ -21,12 +20,9 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   public users$: Observable<IUser[]>;
   public projects$: Observable<IProject[]>;
   public EStatus = EStatus;
-  private id: number;
   private subscriptions: Subscription[];
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private taskService: TaskService,
     private userService: UserService,
     private projectService: ProjectService,
@@ -44,10 +40,6 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.form = this.taskService.createForm();
     this.subscriptions = [];
-    const id = this.route.snapshot.paramMap.get('id')
-    if (id) {
-      this.id = parseInt(id, 10);
-    }
     this.users$ = this.userService.getUsers();
     this.projects$ = this.projectService.getProjects();
     this.subscriptions.push(
