@@ -108,8 +108,8 @@ describe('ProjectDetailsComponent', () => {
         expect(sut).toBeTruthy();
     });
 
-    it('#deleteProject should be called once', () => {
+    it('#deleteProject should be called', () => {
         sut.deleteProject();
-        expect(projectServiceMock.deleteProject.calls.count()).toEqual(1);
+        expect(projectServiceMock.deleteProject).toHaveBeenCalled();
     });
 });
