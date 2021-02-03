@@ -1,8 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
+import { Observable } from 'rxjs';
 import { EStatus } from '../models/enums/EStatus';
 import { IProject } from '../models/interfaces/IProject';
 import { EnumPipe } from '../pipes/enum.pipe';
@@ -13,19 +14,24 @@ import { ProjectDetailsComponent } from './project-details.component';
 
 describe('ProjectDetailsComponent', () => {
     let sut: ProjectDetailsComponent;
-    let formBuilderMock: FormBuilder;
     const routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
+    let projectServiceMock: jasmine.SpyObj<ProjectService>;
 
     beforeEach(() => {
         const activatedRouteMock = {
             snapshot: {
                 paramMap: {
-                    get: (id) => {
+                    get: () => {
                         return 0;
                     }
                 }
             }
         };
+
+        projectServiceMock = jasmine.createSpyObj<ProjectService>('ProjectService', [
+            'deleteProject',
+            'getProject'
+        ]);
 
         TestBed.configureTestingModule({
             imports: [
@@ -34,9 +40,7 @@ describe('ProjectDetailsComponent', () => {
             ],
             providers: [
                 ProjectDetailsComponent,
-                ProjectService,
                 UserService,
-                FormBuilder,
                 EnumPipe,
                 {
                     provide: Router,
@@ -49,23 +53,21 @@ describe('ProjectDetailsComponent', () => {
                 {
                     provide: MsalService,
                     useClass: MockAuthService
+                },
+                {
+                    provide: ProjectService,
+                    useValue: projectServiceMock
                 }
             ]
         });
         sut = TestBed.inject(ProjectDetailsComponent);
-        formBuilderMock = TestBed.inject(FormBuilder);
-        sut.ngOnInit();
-    });
 
-    afterAll(() => {
-        sut.ngOnDestroy();
-    });
+        const deleteProject$ = new Observable<any>((observer) => {
+            observer.next('Test');
+            observer.complete();
+        });
+        projectServiceMock.deleteProject.and.returnValue(deleteProject$);
 
-    it('should be created', () => {
-        expect(sut).toBeTruthy();
-    });
-
-    it('#deleteProject should not change project', () => {
         const mockProject: IProject = {
             id: 0,
             tenantId: 'tenantId',
@@ -88,7 +90,26 @@ describe('ProjectDetailsComponent', () => {
                 }
             ]
         };
+
+        const getProject$ = new Observable<IProject>((observer) => {
+            observer.next(mockProject);
+            observer.complete();
+        });
+        projectServiceMock.getProject.and.returnValue(getProject$);
+
+        sut.ngOnInit();
+    });
+
+    afterAll(() => {
+        sut.ngOnDestroy();
+    });
+
+    it('should be created', () => {
+        expect(sut).toBeTruthy();
+    });
+
+    it('#deleteProject should be called once', () => {
         sut.deleteProject();
-        sut.project$.subscribe(project => expect(project).toEqual(mockProject))
+        expect(projectServiceMock.deleteProject.calls.count()).toEqual(1);
     });
 });
