@@ -1,7 +1,6 @@
 import { Input, OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { EStatus } from '../models/enums/EStatus';
 import { IProject } from '../models/interfaces/IProject';
@@ -21,8 +20,6 @@ export class TasksComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[];
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private taskService: TaskService
   ) { }
 
