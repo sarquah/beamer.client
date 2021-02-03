@@ -20,7 +20,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService
-  ) {}
+  ) { }
 
   public ngOnInit() {
     this.subscriptions = [];
@@ -41,8 +41,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   public deleteProject() {
     this.subscriptions.push(
-      this.projectService
-        .deleteProject(this.id)
+      this.projectService.deleteProject(this.id)
         .subscribe(() => this.router.navigate(['./projects']))
     );
   }
