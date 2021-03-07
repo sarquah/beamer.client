@@ -8,6 +8,7 @@ import { TaskEditComponent } from './task-edit/task-edit.component';
 import { TaskCreateComponent } from './task-create/task-create.component';
 import { MsalGuard } from '@azure/msal-angular';
 import { AdminComponent } from './admin/admin.component';
+import { TimeregistrationsComponent } from './timeregistrations/timeregistrations.component';
 
 const routes: Routes = [
   {
@@ -56,6 +57,10 @@ const routes: Routes = [
           {
             path: 'edit',
             component: TaskEditComponent,
+          },
+          {
+            path: 'timeregistrations',
+            component: TimeregistrationsComponent
           }
         ],
       }

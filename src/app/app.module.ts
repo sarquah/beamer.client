@@ -32,6 +32,7 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
 import { TaskEditComponent } from './task-edit/task-edit.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { AdminComponent } from './admin/admin.component';
+import { TimeregistrationsComponent } from './timeregistrations/timeregistrations.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -77,7 +78,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     TasksComponent,
     TaskEditComponent,
     TaskCreateComponent,
-    AdminComponent
+    AdminComponent,
+    TimeregistrationsComponent
   ],
   imports: [
     BrowserModule,

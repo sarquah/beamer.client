@@ -1,0 +1,32 @@
+.table {
+  margin-top: 15px;
+  width: 50%;
+}
+
+.noTimeregistrations {
+  margin-top: 15px;
+  max-width: 400px;
+}
+
+.mat-cell {
+  vertical-align: text-top;
+  padding: 5px 5px 5px 0;
+}
+
+.mat-header-cell {
+  background-color: #ccd9ea;
+}
+
+.task {
+  max-width: 400px;
+  margin-top: 20px;
+}
+
+.root {
+  margin-left: 10px;
+}
+
+.header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
