@@ -1,25 +1,83 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { MsalService } from '@azure/msal-angular';
+import { MockAuthService } from '../services/mockauth.service.spec';
+import { TimeregistrationService } from '../services/timeregistration.service';
+import { Location } from '@angular/common';
 import { TimeregistrationCreateComponent } from './timeregistration-create.component';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { UserService } from './../services/user.service';
 
 describe('TimeregistrationCreateComponent', () => {
-  let component: TimeregistrationCreateComponent;
-  let fixture: ComponentFixture<TimeregistrationCreateComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ TimeregistrationCreateComponent ]
-    })
-    .compileComponents();
-  });
+  let sut: TimeregistrationCreateComponent;
+  let locationMock: jasmine.SpyObj<Location>;
+  let timeregistrationServiceMock: jasmine.SpyObj<TimeregistrationService>;
+  let formBuilderMock: FormBuilder;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TimeregistrationCreateComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    locationMock = jasmine.createSpyObj<Location>('Location', ['back']);
+    timeregistrationServiceMock = jasmine.createSpyObj<TimeregistrationService>(
+      'TimeregistrationService',
+      ['createForm', 'createTimeregistration']
+    );
+
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, ReactiveFormsModule],
+      providers: [
+        TimeregistrationCreateComponent,
+        UserService,
+        FormBuilder,
+        {
+          provide: MsalService,
+          useClass: MockAuthService,
+        },
+        {
+          provide: Location,
+          useValue: locationMock,
+        },
+        {
+          provide: TimeregistrationService,
+          useValue: timeregistrationServiceMock,
+        },
+      ],
+    });
+    sut = TestBed.inject(TimeregistrationCreateComponent);
+    formBuilderMock = TestBed.inject(FormBuilder);
+
+    const form = formBuilderMock.group({
+      ownerId: new FormControl(null),
+      date: new FormControl(null),
+      taskId: new FormControl(null),
+      hours: new FormControl(null),
+    });
+    timeregistrationServiceMock.createForm.and.returnValue(form);
+
+    sut.ngOnInit();
+  });
+
+  afterAll(() => {
+    sut.ngOnDestroy();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(sut).toBeTruthy();
+  });
+
+  describe('#createTimeregistration', () => {
+    it('call with valid form', () => {
+      sut.createTimeregistration();
+      expect(sut.form.valid).toBeTrue();
+    });
+
+    it('call with invalid form', () => {
+      sut.form.setErrors({ error: true });
+      sut.createTimeregistration();
+      expect(sut.form.invalid).toBeTrue();
+    });
+
+    it('should be called once', () => {
+      sut.createTimeregistration();
+      expect(timeregistrationServiceMock.createTimeregistration).toHaveBeenCalled();
+    });
   });
 });
