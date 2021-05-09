@@ -1,11 +1,11 @@
-import { IUser } from "./IUser";
+import { IUser } from './IUser';
 
 export interface ITimeregistration {
     id?: number;
-	startDate?: Date;
-	endDate?: Date;
+	date?: Date;
 	ownerId?: number;
 	owner?: IUser
 	taskId?: number;
 	tenantId?: string;
+	hours?: number;
 }

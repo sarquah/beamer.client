@@ -9,12 +9,13 @@ import { TaskCreateComponent } from './task-create/task-create.component';
 import { MsalGuard } from '@azure/msal-angular';
 import { AdminComponent } from './admin/admin.component';
 import { TimeregistrationsComponent } from './timeregistrations/timeregistrations.component';
+import { TimeregistrationCreateComponent } from './timeregistration-create/timeregistration-create.component';
 
 const routes: Routes = [
   {
     path: 'admin',
     canActivate: [MsalGuard],
-    component: AdminComponent
+    component: AdminComponent,
   },
   {
     path: 'projects',
@@ -60,16 +61,25 @@ const routes: Routes = [
           },
           {
             path: 'timeregistrations',
-            component: TimeregistrationsComponent
-          }
+            children: [
+              {
+                path: '',
+                component: TimeregistrationsComponent,
+              },
+              {
+                path: 'create',
+                component: TimeregistrationCreateComponent,
+              },
+            ],
+          },
         ],
-      }
+      },
     ],
-  }
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -16,7 +16,7 @@ export class TimeregistrationsComponent implements OnInit {
   private taskId: number;
   private timeregistrations$: Observable<ITimeregistration[]>;
   public task$: Observable<ITask>;
-  public displayedColumns: string[] = ['startDate', 'endDate', 'owner', 'edit', 'delete'];
+  public displayedColumns: string[] = ['date', 'hours', 'owner', 'edit', 'delete'];
   public dataSource: MatTableDataSource<ITimeregistration>;
 
   constructor(
@@ -31,10 +31,8 @@ export class TimeregistrationsComponent implements OnInit {
       this.taskId = parseInt(taskId, 10);
     }
     this.task$ = this.taskService.getTask(this.taskId);
-    this.task$.subscribe(x => console.log(x));
     this.timeregistrations$ = this.timeregistrationService.getTimeregistrationsForTask(this.taskId);
     this.timeregistrations$.subscribe(x => {
-      console.log(x);
       this.dataSource = new MatTableDataSource<ITimeregistration>(x);
     });
   }

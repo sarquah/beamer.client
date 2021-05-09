@@ -1,0 +1,46 @@
+<div class="root">
+    <mat-card>
+      <form [formGroup]="form" (ngSubmit)="createTimeregistration()">
+        <mat-form-field appearance="standard" class="input">
+          <mat-label>Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            placeholder="Date"
+            id="date"
+            formControlName="date"
+          >
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="standard" class="input">
+          <mat-label>Hours of actual work</mat-label>
+          <input
+            matInput
+            type="number"
+            placeholder="Hours"
+            id="hours"
+            formControlName="hours"
+            value="0"
+          >
+        </mat-form-field>
+        <mat-form-field appearance="standard" class="input">
+          <mat-label>Owner</mat-label>
+          <mat-select matInput id="ownerId" formControlName="ownerId">
+            <mat-option *ngFor="let user of users$ | async" [value]="user.id">
+              {{ user.name }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <div class="buttons">
+          <button mat-stroked-button color="warn" (click)="goBack()">
+            Cancel
+          </button>
+          <button mat-stroked-button color="primary" type="submit">
+            Create timeregistration
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+  
