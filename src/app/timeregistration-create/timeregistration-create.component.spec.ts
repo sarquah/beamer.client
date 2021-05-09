@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 import { TimeregistrationCreateComponent } from './timeregistration-create.component';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from './../services/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 describe('TimeregistrationCreateComponent', () => {
   let sut: TimeregistrationCreateComponent;
@@ -15,6 +16,16 @@ describe('TimeregistrationCreateComponent', () => {
   let formBuilderMock: FormBuilder;
 
   beforeEach(() => {
+    const activatedRouteMock = {
+      snapshot: {
+        paramMap: {
+          get: () => {
+            return 0;
+          },
+        },
+      },
+    };
+
     locationMock = jasmine.createSpyObj<Location>('Location', ['back']);
     timeregistrationServiceMock = jasmine.createSpyObj<TimeregistrationService>(
       'TimeregistrationService',
@@ -27,6 +38,10 @@ describe('TimeregistrationCreateComponent', () => {
         TimeregistrationCreateComponent,
         UserService,
         FormBuilder,
+        {
+          provide: ActivatedRoute,
+          useValue: activatedRouteMock,
+        },
         {
           provide: MsalService,
           useClass: MockAuthService,
@@ -77,7 +92,9 @@ describe('TimeregistrationCreateComponent', () => {
 
     it('should be called once', () => {
       sut.createTimeregistration();
-      expect(timeregistrationServiceMock.createTimeregistration).toHaveBeenCalled();
+      expect(
+        timeregistrationServiceMock.createTimeregistration
+      ).toHaveBeenCalled();
     });
   });
 });
