@@ -13,6 +13,7 @@ describe('TimeregistrationCreateComponent', () => {
   let sut: TimeregistrationCreateComponent;
   let locationMock: jasmine.SpyObj<Location>;
   let timeregistrationServiceMock: jasmine.SpyObj<TimeregistrationService>;
+  let userServiceMock: UserService;
   let formBuilderMock: FormBuilder;
 
   beforeEach(() => {
@@ -36,8 +37,8 @@ describe('TimeregistrationCreateComponent', () => {
       imports: [HttpClientTestingModule, ReactiveFormsModule],
       providers: [
         TimeregistrationCreateComponent,
-        UserService,
         FormBuilder,
+        UserService,
         {
           provide: ActivatedRoute,
           useValue: activatedRouteMock,
@@ -53,10 +54,11 @@ describe('TimeregistrationCreateComponent', () => {
         {
           provide: TimeregistrationService,
           useValue: timeregistrationServiceMock,
-        },
+        }
       ],
     });
     sut = TestBed.inject(TimeregistrationCreateComponent);
+    userServiceMock = TestBed.inject(UserService);
     formBuilderMock = TestBed.inject(FormBuilder);
 
     const form = formBuilderMock.group({
