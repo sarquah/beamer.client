@@ -14,7 +14,7 @@ import { TaskService } from '../services/task.service';
 })
 export class TasksComponent implements OnInit, OnDestroy {
   @Input() project: Observable<IProject>;
-  public displayedColumns: string[] = ['name', 'description', 'status', 'owner', 'startDate', 'endDate', 'edit', 'delete'];
+  public displayedColumns: string[] = ['name', 'description', 'status', 'owner', 'startDate', 'endDate', 'timeregistrations', 'edit', 'delete'];
   public dataSource: MatTableDataSource<ITask>;
   public EStatus = EStatus;
   private subscriptions: Subscription[];

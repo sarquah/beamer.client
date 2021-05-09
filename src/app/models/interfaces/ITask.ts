@@ -1,4 +1,5 @@
 import { EStatus } from '../enums/EStatus';
+import { ITimeregistration } from './ITimeregistration';
 
 export interface ITask {
   id?: number;
@@ -11,4 +12,5 @@ export interface ITask {
   endDate?: Date;
   projectId?: number;
   tenantId?: string;
+  timeRegistrations?: ITimeregistration[];
 }
