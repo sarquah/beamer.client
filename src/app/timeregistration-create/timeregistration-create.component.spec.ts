@@ -8,6 +8,8 @@ import { TimeregistrationCreateComponent } from './timeregistration-create.compo
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from './../services/user.service';
 import { ActivatedRoute } from '@angular/router';
+import { ITimeregistration } from '../models/interfaces/ITimeregistration';
+import { Observable } from 'rxjs';
 
 describe('TimeregistrationCreateComponent', () => {
   let sut: TimeregistrationCreateComponent;
@@ -54,7 +56,7 @@ describe('TimeregistrationCreateComponent', () => {
         {
           provide: TimeregistrationService,
           useValue: timeregistrationServiceMock,
-        }
+        },
       ],
     });
     sut = TestBed.inject(TimeregistrationCreateComponent);
@@ -68,6 +70,23 @@ describe('TimeregistrationCreateComponent', () => {
       hours: new FormControl(null),
     });
     timeregistrationServiceMock.createForm.and.returnValue(form);
+
+    const mockTimeregistration: ITimeregistration = {
+      id: 0,
+      tenantId: 'tenantId',
+      ownerId: 0,
+      date: new Date(),
+      taskId: 0,
+      hours: 5,
+    };
+
+    const timeregistration$ = new Observable<ITimeregistration>((observer) => {
+      observer.next(mockTimeregistration);
+      observer.complete();
+    });
+    timeregistrationServiceMock.createTimeregistration.and.returnValue(
+      timeregistration$
+    );
 
     sut.ngOnInit();
   });
