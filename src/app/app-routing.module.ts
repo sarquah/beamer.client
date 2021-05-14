@@ -10,6 +10,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { AdminComponent } from './admin/admin.component';
 import { TimeregistrationsComponent } from './timeregistrations/timeregistrations.component';
 import { TimeregistrationCreateComponent } from './timeregistration-create/timeregistration-create.component';
+import { TimeregistrationEditComponent } from './timeregistration-edit/timeregistration-edit.component';
 
 const routes: Routes = [
   {
@@ -53,7 +54,7 @@ const routes: Routes = [
         component: TaskCreateComponent,
       },
       {
-        path: ':id',
+        path: ':taskId',
         children: [
           {
             path: 'edit',
@@ -69,6 +70,15 @@ const routes: Routes = [
               {
                 path: 'create',
                 component: TimeregistrationCreateComponent,
+              },
+              {
+                path: ':timeregistrationId',
+                children: [
+                  {
+                    path: 'edit',
+                    component: TimeregistrationEditComponent,
+                  },
+                ],
               },
             ],
           },
