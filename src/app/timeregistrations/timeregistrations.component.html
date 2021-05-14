@@ -41,7 +41,7 @@
         <td mat-cell *matCellDef="let timeregistration">
           <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" type="button"
             mat-raised-button color="accent" matTooltip="Edit"
-            [routerLink]="['/timeregistrations', timeregistration.id, 'edit']">
+            [routerLink]="[timeregistration.id, 'edit']">
             <mat-icon>edit</mat-icon>
           </button>
         </td>

@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { ITask } from '../models/interfaces/ITask';
-import { ITimeregistration as ITimeregistration } from '../models/interfaces/ITimeregistration';
+import { ITimeregistration } from '../models/interfaces/ITimeregistration';
 import { TaskService } from '../services/task.service';
 import { TimeregistrationService } from '../services/timeregistration.service';
 
@@ -34,7 +34,7 @@ export class TimeregistrationsComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.subscriptions = [];
-    const taskId = this.route.snapshot.paramMap.get('id');
+    const taskId = this.route.snapshot.paramMap.get('taskId');
     if (taskId) {
       this.taskId = parseInt(taskId, 10);
     }

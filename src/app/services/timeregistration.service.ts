@@ -5,7 +5,7 @@ import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
 import { Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ITimeregistration as ITimeregistration } from '../models/interfaces/ITimeregistration';
+import { ITimeregistration } from '../models/interfaces/ITimeregistration';
 
 type TimeregistrationFormControls = { [field in keyof ITimeregistration]?: FormControl };
 @Injectable({

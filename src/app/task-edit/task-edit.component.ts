@@ -44,7 +44,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.form = this.taskService.createForm();
     this.subscriptions = [];
-    const id = this.route.snapshot.paramMap.get('id')
+    const id = this.route.snapshot.paramMap.get('taskId')
     if (id) {
       this.id = parseInt(id, 10);
     }
